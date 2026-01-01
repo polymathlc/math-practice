@@ -1784,15 +1784,51 @@
 </head>
 
 <body>
-    <div id="auth-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:99999; display:flex; justify-content:center; align-items:center; font-family:'Outfit', sans-serif; overflow-y: auto;">
-        <div style="width:100%; max-width:450px; padding:30px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.1); border:1px solid #eee; text-align:center; margin: 20px;">
-            <img src="https://www.dropbox.com/scl/fi/pmks0l77qiyuw781sh9t3/polymath-sticker.png?rlkey=jmbai9hxsaggsnua6dwewz5c6&raw=1" style="max-width:100px; margin-bottom:15px;">
+    <!-- MANDATORY AGREEMENT POPUP -->
+    <div id="agreement-overlay"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); z-index:2147483647; display:flex !important; justify-content:center; align-items:center; backdrop-filter:blur(10px); font-family:'Outfit', sans-serif;">
+        <div
+            style="background:white; width:90%; max-width:480px; padding:40px; border-radius:24px; box-shadow:0 30px 90px rgba(0,0,0,0.6); text-align:center; position:relative; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="font-size:3.5rem; margin-bottom:15px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">⚖️</div>
+            <h2 style="color:#2d3436; margin:0 0 15px 0; font-size:1.8rem; font-weight:700; letter-spacing:-0.5px;">
+                Student Declaration</h2>
+            <p style="font-size:1.1rem; line-height:1.6; color:#636e72; margin-bottom:25px;">
+                By using this app, I confirm that I am a currently registered student of <strong
+                    style="color:#0984e3;">Polymath Learning Centre</strong>.
+            </p>
+            <div
+                style="background:#fff3cd; color:#856404; padding:15px; border-radius:12px; margin-bottom:30px; font-size:0.95rem; border:1px solid #ffeeba; text-align:left; display:flex; gap:10px;">
+                <span style="font-size:1.2rem;">⚠️</span>
+                <span>I lawfully agree to pay the monthly tuition fees for as long as I am using this
+                    application.</span>
+            </div>
+            <button onclick="document.getElementById('agreement-overlay').style.display='none'"
+                style="background:linear-gradient(135deg, #0984e3, #0773c5); color:white; border:none; padding:16px 0; font-size:1.1rem; border-radius:12px; cursor:pointer; font-weight:600; width:100%; transition:transform 0.1s, box-shadow 0.1s; box-shadow: 0 10px 20px rgba(9, 132, 227, 0.3);">
+                I Agree & Proceed
+            </button>
+        </div>
+    </div>
+    <script>
+        // Safety check to ensure popup appears
+        window.addEventListener('load', function () {
+            const agOverlay = document.getElementById('agreement-overlay');
+            if (agOverlay) agOverlay.style.display = 'flex';
+        });
+    </script>
+    <div id="auth-overlay"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:99999; display:flex; justify-content:center; align-items:center; font-family:'Outfit', sans-serif; overflow-y: auto;">
+        <div
+            style="width:100%; max-width:450px; padding:30px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.1); border:1px solid #eee; text-align:center; margin: 20px;">
+            <img src="https://www.dropbox.com/scl/fi/pmks0l77qiyuw781sh9t3/polymath-sticker.png?rlkey=jmbai9hxsaggsnua6dwewz5c6&raw=1"
+                style="max-width:100px; margin-bottom:15px;">
             <h2 id="auth-title" style="margin-bottom: 20px;">Welcome Back!</h2>
-            
+
             <div id="reg-fields" style="display:none;">
-                <input type="text" id="parent-name" placeholder="Parent's Full Name" style="width:100%; padding:10px; margin:5px 0; border:1px solid #ddd; border-radius:8px;">
-                <input type="text" id="student-name" placeholder="Student's Full Name" style="width:100%; padding:10px; margin:5px 0; border:1px solid #ddd; border-radius:8px;">
-                
+                <input type="text" id="parent-name" placeholder="Parent's Full Name"
+                    style="width:100%; padding:10px; margin:5px 0; border:1px solid #ddd; border-radius:8px;">
+                <input type="text" id="student-name" placeholder="Student's Full Name"
+                    style="width:100%; padding:10px; margin:5px 0; border:1px solid #ddd; border-radius:8px;">
+
                 <div style="display:flex; gap:10px; margin: 5px 0;">
                     <select id="student-level" style="flex:1; padding:10px; border:1px solid #ddd; border-radius:8px;">
                         <option value="">Select Level</option>
@@ -1802,32 +1838,44 @@
                         <option value="P6">Primary 6</option>
                         <option value="S1">Secondary 1</option>
                     </select>
-                    <select id="student-subject" style="flex:1; padding:10px; border:1px solid #ddd; border-radius:8px;">
+                    <select id="student-subject"
+                        style="flex:1; padding:10px; border:1px solid #ddd; border-radius:8px;">
                         <option value="">Subject</option>
                         <option value="Math">Math</option>
                         <option value="Science">Science</option>
                     </select>
                 </div>
             </div>
-    
-            <input type="email" id="auth-email" placeholder="Email" style="width:100%; padding:10px; margin:5px 0; border:1px solid #ddd; border-radius:8px;">
-            <input type="password" id="auth-pass" placeholder="Password" style="width:100%; padding:10px; margin:5px 0; border:1px solid #ddd; border-radius:8px;">
-            
-            <div id="legal-box" style="display:none; text-align:left; margin:15px 0; background:#f9f9f9; padding:10px; border-radius:8px; font-size:0.8rem; color:#555;">
+
+            <input type="email" id="auth-email" placeholder="Email"
+                style="width:100%; padding:10px; margin:5px 0; border:1px solid #ddd; border-radius:8px;">
+            <input type="password" id="auth-pass" placeholder="Password"
+                style="width:100%; padding:10px; margin:5px 0; border:1px solid #ddd; border-radius:8px;">
+
+            <div id="legal-box"
+                style="display:none; text-align:left; margin:15px 0; background:#f9f9f9; padding:10px; border-radius:8px; font-size:0.8rem; color:#555;">
                 <label style="display:flex; gap:10px; cursor:pointer;">
                     <input type="checkbox" id="legal-agree" style="width:20px; height:20px;">
-                    <span>I confirm I am a registered student of Polymath Learning Centre and I am lawfully obliged to pay the monthly tuition fees for as long as I am using this application.</span>
+                    <span>I confirm I am a registered student of Polymath Learning Centre and I am lawfully obliged to
+                        pay the monthly tuition fees for as long as I am using this application.</span>
                 </label>
             </div>
-    
-            <button id="btn-login" onclick="handleLogin()" style="width:100%; padding:12px; background:#0984e3; color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer; margin-top:10px;">Login</button>
-            <button id="btn-google" onclick="handleGoogleLogin()" style="width:100%; padding:12px; background:#fff; color:#757575; border:1px solid #ddd; border-radius:8px; font-weight:600; cursor:pointer; margin-top:10px; display:flex; align-items:center; justify-content:center; gap:10px;">
-    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18">
-    Sign in with Google
-</button>
+
+            <button id="btn-login" onclick="handleLogin()"
+                style="width:100%; padding:12px; background:#0984e3; color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer; margin-top:10px;">Login</button>
+
+            <button id="btn-google" onclick="handleGoogleLogin()"
+                style="width:100%; padding:12px; background:#fff; color:#757575; border:1px solid #ddd; border-radius:8px; font-weight:600; cursor:pointer; margin-top:10px; display:flex; align-items:center; justify-content:center; gap:10px;">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18">
+                Sign in with Google
+            </button>
+
             <div style="margin-top:20px; font-size:0.85rem; color:#636e72;">
-                <a href="javascript:void(0)" onclick="handleResetPassword()" style="color:#0984e3; text-decoration:none;">Forgot Password?</a><br><br>
-                <span id="mode-text">Don't have an account?</span> <a href="javascript:void(0)" onclick="toggleAuthMode()" id="auth-switch" style="color:#0984e3; font-weight:600; cursor:pointer;">Sign Up</a>
+                <a href="javascript:void(0)" onclick="handleResetPassword()"
+                    style="color:#0984e3; text-decoration:none;">Forgot Password?</a><br><br>
+                <span id="mode-text">Don't have an account?</span> <a href="javascript:void(0)"
+                    onclick="toggleAuthMode()" id="auth-switch"
+                    style="color:#0984e3; font-weight:600; cursor:pointer;">Sign Up</a>
             </div>
             <p id="auth-error" style="color:#d63031; font-size:0.8rem; margin-top:15px;"></p>
         </div>
@@ -1887,10 +1935,13 @@
             <label for="showAnswers" style="cursor:pointer; color:black; font-size:0.8rem;">Show Key</label>
         </div>
         <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-<div id="user-info" style="text-align:center; margin-bottom: 10px;">
-    <p id="login-days-display" style="font-size:0.9rem; font-weight:bold; color:var(--accent);">Loading days...</p>
-</div>
-<button onclick="handleLogout()" style="background:#d63031; width:100%; padding: 10px; border-radius: 8px; color: white; cursor: pointer; font-weight: 600;">🚪 Logout</button>
+        <div id="user-info" style="text-align:center; margin-bottom: 10px;">
+            <p id="login-days-display" style="font-size:0.9rem; font-weight:bold; color:var(--accent);">Loading days...
+            </p>
+        </div>
+        <button onclick="handleLogout()"
+            style="background:#d63031; width:100%; padding: 10px; border-radius: 8px; color: white; cursor: pointer; font-weight: 600;">🚪
+            Logout</button>
     </aside>
 
     <div id="paper-container">
@@ -6894,205 +6945,104 @@
         });
     </script>
     <script type="module">
-        // Import necessary Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-      
-        // Your Specific Configuration
+
         const firebaseConfig = {
-          apiKey: "AIzaSyAUSI3Uh28IeqASEp0JhH4QPaVt-O3meBo",
-          authDomain: "mathgen--app.firebaseapp.com",
-          projectId: "mathgen--app",
-          storageBucket: "mathgen--app.firebasestorage.app",
-          messagingSenderId: "165654161198",
-          appId: "1:165654161198:web:16c8bd60eb3a2aa7edbcbf",
-          measurementId: "G-0MWZFG211D"
+            apiKey: "AIzaSyAUSI3Uh28IeqASEp0JhH4QPaVt-O3meBo",
+            authDomain: "mathgen--app.firebaseapp.com",
+            projectId: "mathgen--app",
+            storageBucket: "mathgen--app.firebasestorage.app",
+            messagingSenderId: "165654161198",
+            appId: "1:165654161198:web:16c8bd60eb3a2aa7edbcbf",
+            measurementId: "G-0MWZFG211D"
         };
-      
-        // Initialize Firebase
+
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db_fs = getFirestore(app);
-      
+        const googleProvider = new GoogleAuthProvider();
+
         let isSignUpMode = false;
-      
-// UI: Toggle between Login and Sign Up
-window.toggleAuthMode = () => {
-    isSignUpMode = !isSignUpMode;
-    const regFields = document.getElementById('reg-fields');
-    const legalBox = document.getElementById('legal-box');
-    
-    document.getElementById('auth-title').innerText = isSignUpMode ? "Register Student Account" : "Welcome Back!";
-    document.getElementById('btn-login').innerText = isSignUpMode ? "Confirm Registration" : "Login";
-    document.getElementById('auth-switch').innerText = isSignUpMode ? "Login" : "Sign Up";
-    document.getElementById('mode-text').innerText = isSignUpMode ? "Already a student?" : "Don't have an account?";
-    
-    // Show/Hide extra fields
-    regFields.style.display = isSignUpMode ? "block" : "none";
-    legalBox.style.display = isSignUpMode ? "block" : "none";
-    document.getElementById('auth-error').innerText = "";
-};
 
-// AUTH: Registration & Login
-window.handleLogin = async () => {
-    const email = document.getElementById('auth-email').value;
-    const pass = document.getElementById('auth-pass').value;
-    const errorMsg = document.getElementById('auth-error');
-    
-    if(!email || !pass) { errorMsg.innerText = "Please enter email and password."; return; }
+        window.toggleAuthMode = () => {
+            isSignUpMode = !isSignUpMode;
+            const regFields = document.getElementById('reg-fields');
+            const legalBox = document.getElementById('legal-box');
+            const googleBtn = document.getElementById('btn-google');
 
-    try {
-        if (isSignUpMode) {
-            // Validate new fields
-            const pName = document.getElementById('parent-name').value;
-            const sName = document.getElementById('student-name').value;
-            const sLvl = document.getElementById('student-level').value;
-            const sSub = document.getElementById('student-subject').value;
-            const agreed = document.getElementById('legal-agree').checked;
+            document.getElementById('auth-title').innerText = isSignUpMode ? "Register Student Account" : "Welcome Back!";
+            document.getElementById('btn-login').innerText = isSignUpMode ? "Confirm Registration" : "Login";
+            document.getElementById('auth-switch').innerText = isSignUpMode ? "Login" : "Sign Up";
+            document.getElementById('mode-text').innerText = isSignUpMode ? "Already a student?" : "Don't have an account?";
 
-            if(!pName || !sName || !sLvl || !sSub) {
-                errorMsg.innerText = "Please fill in all details."; return;
-            }
-            if(!agreed) {
-                errorMsg.innerText = "You must agree to the payment terms."; return;
-            }
+            regFields.style.display = isSignUpMode ? "block" : "none";
+            legalBox.style.display = isSignUpMode ? "block" : "none";
+            googleBtn.style.display = isSignUpMode ? "none" : "flex";
+            document.getElementById('auth-error').innerText = "";
+        };
 
-            // Create account
-            const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
-            const user = userCredential.user;
-
-            // Save details to Database
-            await setDoc(doc(db_fs, "users", user.uid), {
-                email: email,
-                parentName: pName,
-                studentName: sName,
-                level: sLvl,
-                subject: sSub,
-                loginDays: 1,
-                lastLoginDate: new Date().toDateString(),
-                agreedToTerms: true,
-                registrationDate: Date.now()
-            });
-            alert("Registration successful!");
-
-        } else {
-            await signInWithEmailAndPassword(auth, email, pass);
-        }
-    } catch (e) {
-        errorMsg.innerText = "Error: " + e.message;
-    }
-};
-        // LOGIC: Track Daily Login
         async function trackLoginDays(user) {
-          const userRef = doc(db_fs, "users", user.uid);
-          const userSnap = await getDoc(userRef);
-          const today = new Date().toDateString(); // Format: "Fri Jan 02 2026"
-      
-          if (userSnap.exists()) {
-            const userData = userSnap.data();
-            if (userData.lastLoginDate !== today) {
-              // First time logging in today
-              await updateDoc(userRef, {
-                loginDays: increment(1),
-                lastLoginDate: today
-              });
-              const newCount = (userData.loginDays || 0) + 1;
-              document.getElementById('login-days-display').innerText = `📅 Day ${newCount} streak!`;
-            } else {
-              // Already logged in today
-              document.getElementById('login-days-display').innerText = `📅 Day ${userData.loginDays || 1} streak!`;
-            }
-          } else {
-            // Brand new user
-            await setDoc(userRef, {
-              email: user.email,
-              loginDays: 1,
-              lastLoginDate: today,
-              createdAt: Date.now()
-            });
-            document.getElementById('login-days-display').innerText = `📅 Day 1 streak!`;
-          }
+            const userRef = doc(db_fs, "users", user.uid);
+            const today = new Date().toDateString();
+            try {
+                const userSnap = await getDoc(userRef);
+                if (userSnap.exists()) {
+                    const data = userSnap.data();
+                    if (data.lastLoginDate !== today) {
+                        await updateDoc(userRef, { loginDays: increment(1), lastLoginDate: today });
+                        document.getElementById('login-days-display').innerText = `📅 Day ${(data.loginDays || 0) + 1} streak!`;
+                    } else {
+                        document.getElementById('login-days-display').innerText = `📅 Day ${data.loginDays} streak!`;
+                    }
+                } else {
+                    await setDoc(userRef, { email: user.email, studentName: user.displayName || "Student", loginDays: 1, lastLoginDate: today, registrationDate: Date.now() });
+                    document.getElementById('login-days-display').innerText = `📅 Day 1 streak!`;
+                }
+            } catch (e) { console.error("DB Error", e); }
         }
-      
-        // AUTH: Login / Sign Up Action
-        window.handleLogin = () => {
 
-          // Add this right before or after your window.handleLogin function
-const googleProvider = new GoogleAuthProvider(); //
+        window.handleLogin = async () => {
+            const email = document.getElementById('auth-email').value;
+            const pass = document.getElementById('auth-pass').value;
+            const errorMsg = document.getElementById('auth-error');
+            if (!email || !pass) { errorMsg.innerText = "Enter email and password."; return; }
+            try {
+                if (isSignUpMode) {
+                    const pName = document.getElementById('parent-name').value;
+                    const sName = document.getElementById('student-name').value;
+                    const agreed = document.getElementById('legal-agree').checked;
+                    if (!pName || !sName || !agreed) { errorMsg.innerText = "Fill all fields and agree to terms."; return; }
+                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                    await setDoc(doc(db_fs, "users", cred.user.uid), { email, parentName: pName, studentName: sName, loginDays: 1, lastLoginDate: new Date().toDateString(), agreedToTerms: true });
+                } else {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                }
+            } catch (e) { errorMsg.innerText = e.message; }
+        };
 
-window.handleGoogleLogin = async () => {
-    const errorMsg = document.getElementById('auth-error');
-    try {
-        // Opens the Google sign-in window
-        const result = await signInWithPopup(auth, googleProvider);
-        const user = result.user;
-        
-        // After successful Google login, track their login days
-        await trackLoginDays(user);
-        console.log("Logged in as:", user.displayName);
-    } catch (e) {
-        errorMsg.innerText = "Google Login Error: " + e.message;
-    }
-};
-          const email = document.getElementById('auth-email').value;
-          const pass = document.getElementById('auth-pass').value;
-          const errorMsg = document.getElementById('auth-error');
-          
-          if(!email || !pass) { errorMsg.innerText = "Please fill in all fields."; return; }
-      
-          if (isSignUpMode) {
-            createUserWithEmailAndPassword(auth, email, pass)
-              .catch(e => { errorMsg.innerText = "Error: " + e.message; });
-          } else {
-            signInWithEmailAndPassword(auth, email, pass)
-              .catch(e => { errorMsg.innerText = "Invalid email or password."; });
-          }
+        window.handleGoogleLogin = async () => {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                await trackLoginDays(result.user);
+            } catch (e) { document.getElementById('auth-error').innerText = "Google Error: " + e.message; }
         };
-window.handleGoogleLogin = async () => {
-    const errorMsg = document.getElementById('auth-error');
-    try {
-        // Opens the Google sign-in window
-        const result = await signInWithPopup(auth, googleProvider);
-        const user = result.user;
-        
-        // After successful Google login, track their login days
-        await trackLoginDays(user);
-        console.log("Logged in as:", user.displayName);
-    } catch (e) {
-        errorMsg.innerText = "Google Login Error: " + e.message;
-    }
-};
-      
-        // AUTH: Logout
-        window.handleLogout = () => {
-          signOut(auth).then(() => {
-              location.reload(); // Refresh to show login screen again
-          });
-        };
-      
-        // AUTH: Forget Password
+
+        window.handleLogout = () => signOut(auth).then(() => location.reload());
+
         window.handleResetPassword = () => {
-          const email = document.getElementById('auth-email').value;
-          if (!email) { alert("Please enter your email address in the box first."); return; }
-          sendPasswordResetEmail(auth, email)
-            .then(() => alert("A password reset link has been sent to your email!"))
-            .catch(e => alert("Error: " + e.message));
+            const email = document.getElementById('auth-email').value;
+            if (!email) { alert("Enter email first."); return; }
+            sendPasswordResetEmail(auth, email).then(() => alert("Reset link sent!"));
         };
-      
-        // STATE: Check if user is logged in
+
         onAuthStateChanged(auth, (user) => {
-          const overlay = document.getElementById('auth-overlay');
-          if (user) {
-            overlay.style.display = 'none'; // Hide login screen
-            trackLoginDays(user);
-          } else {
-            overlay.style.display = 'flex'; // Show login screen
-          }
+            const overlay = document.getElementById('auth-overlay');
+            if (user) { overlay.style.display = 'none'; trackLoginDays(user); }
+            else { overlay.style.display = 'flex'; }
         });
-      </script>
+    </script>
 </body>
 
 </html>
-
-
