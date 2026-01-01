@@ -1821,7 +1821,10 @@
             </div>
     
             <button id="btn-login" onclick="handleLogin()" style="width:100%; padding:12px; background:#0984e3; color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer; margin-top:10px;">Login</button>
-            
+            <button id="btn-google" onclick="handleGoogleLogin()" style="width:100%; padding:12px; background:#fff; color:#757575; border:1px solid #ddd; border-radius:8px; font-weight:600; cursor:pointer; margin-top:10px; display:flex; align-items:center; justify-content:center; gap:10px;">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18">
+    Sign in with Google
+</button>
             <div style="margin-top:20px; font-size:0.85rem; color:#636e72;">
                 <a href="javascript:void(0)" onclick="handleResetPassword()" style="color:#0984e3; text-decoration:none;">Forgot Password?</a><br><br>
                 <span id="mode-text">Don't have an account?</span> <a href="javascript:void(0)" onclick="toggleAuthMode()" id="auth-switch" style="color:#0984e3; font-weight:600; cursor:pointer;">Sign Up</a>
@@ -7059,3 +7062,4 @@ window.handleLogin = async () => {
 </body>
 
 </html>
+
