@@ -2135,37 +2135,6 @@
 </head>
 
 <body>
-    <!-- MANDATORY AGREEMENT POPUP -->
-    <div id="agreement-overlay"
-        style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); z-index:2147483647; display:flex !important; justify-content:center; align-items:center; backdrop-filter:blur(10px); font-family:'Outfit', sans-serif;">
-        <div
-            style="background:white; width:90%; max-width:480px; padding:40px; border-radius:24px; box-shadow:0 30px 90px rgba(0,0,0,0.6); text-align:center; position:relative; border: 1px solid rgba(255,255,255,0.1);">
-            <div style="font-size:3.5rem; margin-bottom:15px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">⚖️</div>
-            <h2 style="color:#2d3436; margin:0 0 15px 0; font-size:1.8rem; font-weight:700; letter-spacing:-0.5px;">
-                Student Declaration</h2>
-            <p style="font-size:1.1rem; line-height:1.6; color:#636e72; margin-bottom:25px;">
-                By using this app, I confirm that I am a currently registered student of <strong
-                    style="color:#0984e3;">Polymath Learning Centre</strong>.
-            </p>
-            <div
-                style="background:#fff3cd; color:#856404; padding:15px; border-radius:12px; margin-bottom:30px; font-size:0.95rem; border:1px solid #ffeeba; text-align:left; display:flex; gap:10px;">
-                <span style="font-size:1.2rem;">⚠️</span>
-                <span>I lawfully agree to pay the monthly tuition fees for as long as I am using this
-                    application.</span>
-            </div>
-            <button onclick="document.getElementById('agreement-overlay').style.display='none'"
-                style="background:linear-gradient(135deg, #0984e3, #0773c5); color:white; border:none; padding:16px 0; font-size:1.1rem; border-radius:12px; cursor:pointer; font-weight:600; width:100%; transition:transform 0.1s, box-shadow 0.1s; box-shadow: 0 10px 20px rgba(9, 132, 227, 0.3);">
-                I Agree & Proceed
-            </button>
-        </div>
-    </div>
-    <script>
-        // Safety check to ensure popup appears
-        window.addEventListener('load', function () {
-            const agOverlay = document.getElementById('agreement-overlay');
-            if (agOverlay) agOverlay.style.display = 'flex';
-        });
-    </script>
     <div id="auth-overlay">
         <div class="auth-box">
             <img src="https://www.dropbox.com/scl/fi/pmks0l77qiyuw781sh9t3/polymath-sticker.png?rlkey=jmbai9hxsaggsnua6dwewz5c6&raw=1"
