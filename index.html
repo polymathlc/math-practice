@@ -6125,7 +6125,7 @@
                         <span>${item.s || 'No School'} • ${item.lvl || 'No Lvl'} • ${item.top || 'No Topic'}</span>
                         <span style="background:${getDiffColor(item.dif)}; color:white; padding:2px 6px; border-radius:4px; font-size:0.75rem;">${item.dif}</span>
                     </div>
-                    <div class="browse-item-q">${stripHTML(formatText(item.q)).substring(0, 150)}${item.q.length > 150 ? '...' : ''}</div>
+                    <div class="browse-item-q">${stripHTML(formatText(item.q || '')).substring(0, 150)}${(item.q || '').length > 150 ? '...' : ''}</div>
                     <div class="browse-item-footer">
                         <button onclick="addFromBrowse('${item.id}', this)" class="add-to-paper-btn" style="padding: 6px 12px; font-size: 0.8rem; flex-shrink:0;">Add to Worksheet</button>
                     </div>
@@ -6371,7 +6371,7 @@
                 showToast("Already in worksheet!");
                 return;
             }
-            currentPaperQuestions.push(q);
+            currentPaperQuestions.push(JSON.parse(JSON.stringify(q)));
             addedQuestionIds.add(dbIndex);
             const btn = document.getElementById(`add-btn-${dbIndex}`);
             if (btn) { btn.classList.add('added'); btn.textContent = '✓ Added'; btn.disabled = true; }
@@ -6424,7 +6424,7 @@
             isAdaptiveMode = false;
             document.body.classList.remove('adaptive-mode');
 
-            currentPaperQuestions = db.filter(q => flaggedIds.has(q.id));
+            currentPaperQuestions = db.filter(q => flaggedIds.has(q.id)).map(q => JSON.parse(JSON.stringify(q)));
             if (currentPaperQuestions.length === 0) {
                 alert("No flagged questions to review!");
                 isReviewMode = false;
@@ -6661,7 +6661,7 @@
                 [pool[i], pool[j]] = [pool[j], pool[i]];
             }
 
-            currentPaperQuestions = pool.slice(0, qCount);
+            currentPaperQuestions = pool.slice(0, qCount).map(q => JSON.parse(JSON.stringify(q)));
             renderPaper();
             closeGenModal();
             showToast(`Generated worksheet with ${currentPaperQuestions.length} questions`);
@@ -6689,6 +6689,10 @@
 
             currentPaperQuestions.forEach((item, index) => {
                 try {
+                    // Ensure question and answer fields exist
+                    if (!item.q) item.q = '';
+                    if (!item.a) item.a = '';
+
                     const formattedQ = formatText(item.q);
                     const formattedA = formatText(item.a);
                     const mcqData = parseMCQ(item.q);
@@ -7170,7 +7174,8 @@
             isReviewMode = false;
             const vault = JSON.parse(localStorage.getItem('mathGenVault')) || [];
             if (vault.length === 0) { alert("Vault is empty!"); return; }
-            currentPaperQuestions = vault.map(v => v.qRef || db.find(q => q.id === v.id)).filter(Boolean);
+            // Always prefer fresh data from db over potentially stale qRef, and deep copy
+            currentPaperQuestions = vault.map(v => db.find(q => q.id === v.id) || v.qRef).filter(Boolean).map(q => JSON.parse(JSON.stringify(q)));
             renderPaper();
             showToast(`Loaded ${currentPaperQuestions.length} from Vault`);
         }
@@ -7244,7 +7249,7 @@
         }
 
         function renderAdaptiveQuestion(q, isVault) {
-            currentPaperQuestions = [q];
+            currentPaperQuestions = [JSON.parse(JSON.stringify(q))];
             renderPaper();
             const sheet = document.querySelector('.sheet');
             if (sheet) {
@@ -7356,7 +7361,13 @@
             try {
                 const newQs = JSON.parse(document.getElementById('importData').value);
                 if (!Array.isArray(newQs)) throw "Not an array";
-                newQs.forEach(q => { q.id = 'q_' + Date.now() + Math.random(); db.push(q); });
+                newQs.forEach(q => {
+                    // Ensure required fields exist
+                    if (!q.q) q.q = '';
+                    if (!q.a) q.a = '';
+                    q.id = 'q_' + Date.now() + Math.random();
+                    db.push(q);
+                });
                 updateDropdowns();
                 updateDbCount();
                 populateSearchFilters();
@@ -7764,8 +7775,8 @@
                 }
             });
 
-            // If no blocks, just use a simple question format
-            if (!questionHtml && window.adminBlocks.length === 0) {
+            // If no question text was generated, provide a fallback
+            if (!questionHtml.trim()) {
                 questionHtml = "Question text here...";
             }
 
