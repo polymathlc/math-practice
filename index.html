@@ -708,357 +708,6 @@
             background-color: #732d91;
         }
 
-        /* Block-based Question Editor Styles */
-        .admin-block {
-            transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
-        }
-
-        .admin-block:not(.no-drag) {
-            cursor: grab;
-        }
-
-        .admin-block:not(.no-drag):active {
-            cursor: grabbing;
-        }
-
-        .admin-block.no-drag {
-            cursor: default;
-            opacity: 0.95;
-        }
-
-        .admin-block.dragging {
-            opacity: 0.5;
-            transform: scale(1.02);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-
-        .admin-block.drag-over {
-            border-top: 3px solid #007bff !important;
-            margin-top: -3px;
-        }
-
-        .admin-block .drag-handle {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: grab;
-            color: #999;
-            font-size: 1.2rem;
-            padding: 5px;
-            user-select: none;
-        }
-
-        .admin-block .drag-handle:hover {
-            color: #666;
-        }
-
-        .admin-block .drag-handle:active {
-            cursor: grabbing;
-        }
-
-        .text-formatting-toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-bottom: 8px;
-            padding: 8px 10px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 8px;
-            border: 1px solid #dee2e6;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-        }
-
-        .toolbar-group {
-            display: flex;
-            gap: 2px;
-            padding: 0 8px;
-            border-right: 1px solid #dee2e6;
-        }
-
-        .toolbar-group:last-child {
-            border-right: none;
-        }
-
-        .toolbar-group:first-child {
-            padding-left: 0;
-        }
-
-        .format-btn {
-            width: 34px;
-            height: 34px;
-            border: 1px solid #ced4da;
-            background: white;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.15s ease;
-            color: #495057;
-        }
-
-        .format-btn:hover {
-            background: #e9ecef;
-            border-color: #adb5bd;
-            transform: translateY(-1px);
-        }
-
-        .format-btn:active {
-            background: #dee2e6;
-            transform: translateY(0);
-        }
-
-        .rich-text-editor {
-            min-height: 120px;
-            padding: 14px;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            background: white;
-            outline: none;
-            font-family: inherit;
-            font-size: 1rem;
-            line-height: 1.7;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .rich-text-editor:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
-        }
-
-        .rich-text-editor:empty:before {
-            content: attr(data-placeholder);
-            color: #adb5bd;
-            pointer-events: none;
-        }
-
-        .rich-text-editor ol, .rich-text-editor ul {
-            padding-left: 2em;
-            margin: 0.5em 0;
-        }
-
-        .rich-text-editor li {
-            margin: 0.3em 0;
-        }
-
-        .admin-word {
-            cursor: pointer;
-            padding: 2px 4px;
-            border-radius: 3px;
-            transition: background-color 0.2s;
-        }
-
-        .admin-word:hover {
-            background-color: #e3f2fd;
-        }
-
-        .admin-word.is-blank {
-            background-color: #fff59d;
-            font-weight: 600;
-        }
-
-        /* Auth Overlay Styles */
-        #auth-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .auth-box {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 24px;
-            width: 90%;
-            max-width: 480px;
-            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.15);
-            text-align: center;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(40px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .auth-title {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: 700;
-        }
-
-        .auth-subtitle {
-            color: #666;
-            margin-bottom: 2rem;
-            font-size: 1rem;
-        }
-
-        .auth-input {
-            width: 100%;
-            padding: 12px 16px;
-            margin-bottom: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.2s;
-            font-family: inherit;
-            box-sizing: border-box;
-        }
-
-        .auth-input:focus {
-            border-color: var(--accent);
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(9, 132, 227, 0.15);
-        }
-
-        .auth-btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-bottom: 10px;
-            font-family: inherit;
-        }
-
-        .auth-btn:active {
-            transform: scale(0.98);
-        }
-
-        .auth-btn-primary {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 8px 20px rgba(9, 132, 227, 0.25);
-        }
-
-        .auth-btn-primary:hover {
-            box-shadow: 0 12px 28px rgba(9, 132, 227, 0.35);
-            transform: translateY(-2px);
-        }
-
-        .auth-btn-google {
-            background: white;
-            border: 2px solid #eee;
-            color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .auth-btn-google:hover {
-            background: #fafafa;
-            border-color: #ddd;
-        }
-
-        .auth-toggle-link {
-            color: var(--accent);
-            cursor: pointer;
-            font-size: 0.9rem;
-            margin-top: 15px;
-            display: inline-block;
-            font-weight: 500;
-        }
-
-        .auth-toggle-link:hover {
-            text-decoration: underline;
-        }
-
-        .auth-error {
-            color: #dc3545;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            min-height: 20px;
-            font-weight: 500;
-        }
-
-        .auth-legal {
-            text-align: left;
-            font-size: 0.85rem;
-            color: #666;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            background: #f8f9fa;
-            padding: 12px;
-            border-radius: 10px;
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 10001;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-overlay.visible {
-            display: flex;
-        }
-
-        .modal-box {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Rating Display Styles */
-        .rating-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-
-        .rating-change {
-            font-size: 0.8rem;
-            font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 10px;
-            animation: popIn 0.3s ease;
-        }
-
-        .rating-change.positive {
-            color: #27ae60;
-            background: rgba(39, 174, 96, 0.1);
-        }
-
-        .rating-change.negative {
-            color: #e74c3c;
-            background: rgba(231, 76, 60, 0.1);
-        }
-
         #paper-container {
             max-width: 210mm;
             margin: 0 auto;
@@ -2135,117 +1784,100 @@
 </head>
 
 <body>
-    <div id="auth-overlay">
-        <div class="auth-box">
-            <img src="https://www.dropbox.com/scl/fi/pmks0l77qiyuw781sh9t3/polymath-sticker.png?rlkey=jmbai9hxsaggsnua6dwewz5c6&raw=1"
-                style="max-width:80px; margin-bottom:1.5rem;">
-            <h2 id="auth-title" class="auth-title">Welcome Back!</h2>
-            <p id="auth-subtitle" class="auth-subtitle">Sign in to continue your learning journey</p>
-
-            <div id="auth-error" class="auth-error"></div>
-
-            <input type="email" id="auth-email" class="auth-input" placeholder="Email Address">
-            <input type="password" id="auth-pass" class="auth-input" placeholder="Password">
-            <input type="password" id="auth-pass-confirm" class="auth-input" placeholder="Confirm Password" style="display: none;">
-
-            <div id="forgot-password-link" style="text-align: right; margin-bottom: 15px; margin-top: -5px;">
-                <span class="auth-toggle-link" onclick="handleForgotPassword()" style="font-size: 0.85rem;">Forgot Password?</span>
+    <!-- MANDATORY AGREEMENT POPUP -->
+    <div id="agreement-overlay"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); z-index:2147483647; display:flex !important; justify-content:center; align-items:center; backdrop-filter:blur(10px); font-family:'Outfit', sans-serif;">
+        <div
+            style="background:white; width:90%; max-width:480px; padding:40px; border-radius:24px; box-shadow:0 30px 90px rgba(0,0,0,0.6); text-align:center; position:relative; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="font-size:3.5rem; margin-bottom:15px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">⚖️</div>
+            <h2 style="color:#2d3436; margin:0 0 15px 0; font-size:1.8rem; font-weight:700; letter-spacing:-0.5px;">
+                Student Declaration</h2>
+            <p style="font-size:1.1rem; line-height:1.6; color:#636e72; margin-bottom:25px;">
+                By using this app, I confirm that I am a currently registered student of <strong
+                    style="color:#0984e3;">Polymath Learning Centre</strong>.
+            </p>
+            <div
+                style="background:#fff3cd; color:#856404; padding:15px; border-radius:12px; margin-bottom:30px; font-size:0.95rem; border:1px solid #ffeeba; text-align:left; display:flex; gap:10px;">
+                <span style="font-size:1.2rem;">⚠️</span>
+                <span>I lawfully agree to pay the monthly tuition fees for as long as I am using this
+                    application.</span>
             </div>
-
-            <!-- Registration Fields (Hidden by default) -->
-            <div id="reg-fields" style="display: none;">
-                <div style="background: #e3f2fd; padding: 12px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #0984e3;">
-                    <div style="font-weight: 600; color: #0984e3; margin-bottom: 5px;">Parent & Student Information</div>
-                    <div style="font-size: 0.85rem; color: #666;">Please provide details for each student</div>
-                </div>
-
-                <input type="text" id="parent-name" class="auth-input" placeholder="Parent's Name">
-
-                <div id="students-container">
-                    <div class="student-entry" data-student-index="0">
-                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                            <input type="text" class="auth-input student-name" placeholder="Student's Name" style="flex: 1; margin-bottom: 0;">
-                            <select class="auth-input student-level" style="width: 100px; margin-bottom: 0;">
-                                <option value="">Level</option>
-                                <option value="P3">P3</option>
-                                <option value="P4">P4</option>
-                                <option value="P5">P5</option>
-                                <option value="P6">P6</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="button" onclick="addStudentEntry()" style="width: 100%; padding: 10px; margin-bottom: 15px; background: #e3f2fd; border: 2px dashed #0984e3; border-radius: 8px; color: #0984e3; font-weight: 600; cursor: pointer;">
-                    + Add Another Student
-                </button>
-            </div>
-
-            <div id="legal-box" class="auth-legal" style="display: none;">
-                <input type="checkbox" id="legal-agree" style="margin-top: 3px;">
-                <label for="legal-agree" style="font-size: 0.85rem; line-height: 1.4; cursor: pointer;">
-                    By registering, I confirm that I am a parent/guardian and agree to the terms and conditions of Polymath Learning Centre.
-                </label>
-            </div>
-
-            <button onclick="handleLogin()" id="btn-login" class="auth-btn auth-btn-primary">Login</button>
-            <button onclick="handleGoogleLogin()" id="btn-google" class="auth-btn auth-btn-google">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20"> Sign in with Google
+            <button onclick="document.getElementById('agreement-overlay').style.display='none'"
+                style="background:linear-gradient(135deg, #0984e3, #0773c5); color:white; border:none; padding:16px 0; font-size:1.1rem; border-radius:12px; cursor:pointer; font-weight:600; width:100%; transition:transform 0.1s, box-shadow 0.1s; box-shadow: 0 10px 20px rgba(9, 132, 227, 0.3);">
+                I Agree & Proceed
             </button>
-
-            <span class="auth-toggle-link" onclick="toggleAuthMode()">New here? Create an Account</span>
         </div>
     </div>
+    <script>
+        // Safety check to ensure popup appears
+        window.addEventListener('load', function () {
+            const agOverlay = document.getElementById('agreement-overlay');
+            if (agOverlay) agOverlay.style.display = 'flex';
+        });
+    </script>
+    <div id="auth-overlay"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:99999; display:flex; justify-content:center; align-items:center; font-family:'Outfit', sans-serif; overflow-y: auto;">
+        <div
+            style="width:100%; max-width:450px; padding:30px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.1); border:1px solid #eee; text-align:center; margin: 20px;">
+            <img src="https://www.dropbox.com/scl/fi/pmks0l77qiyuw781sh9t3/polymath-sticker.png?rlkey=jmbai9hxsaggsnua6dwewz5c6&raw=1"
+                style="max-width:100px; margin-bottom:15px;">
+            <h2 id="auth-title" style="margin-bottom: 20px;">Welcome Back!</h2>
 
-    <!-- First-time Google User Setup Modal -->
-    <div id="google-setup-modal" class="modal-overlay">
-        <div class="modal-box">
-            <div style="text-align: center; margin-bottom: 1.5rem;">
-                <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎉</div>
-                <h3 style="color: #0984e3; margin: 0;">Welcome to Math Practice!</h3>
-                <p style="color: #666; margin-top: 0.5rem;">Let's set up your account</p>
-            </div>
+            <div id="reg-fields" style="display:none;">
+                <input type="text" id="parent-name" placeholder="Parent's Full Name"
+                    style="width:100%; padding:10px; margin:5px 0; border:1px solid #ddd; border-radius:8px;">
+                <input type="text" id="student-name" placeholder="Student's Full Name"
+                    style="width:100%; padding:10px; margin:5px 0; border:1px solid #ddd; border-radius:8px;">
 
-            <div id="google-setup-error" class="auth-error"></div>
-
-            <div style="background: #e3f2fd; padding: 12px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #0984e3;">
-                <div style="font-weight: 600; color: #0984e3; margin-bottom: 5px;">Student Information Required</div>
-                <div style="font-size: 0.85rem; color: #666;">Please tell us about the student(s) using this account</div>
-            </div>
-
-            <div style="margin-bottom: 15px;">
-                <label style="font-weight: 600; color: #333; display: block; margin-bottom: 5px;">Parent's Name *</label>
-                <input type="text" id="google-parent-name" class="auth-input" placeholder="Enter parent's name" style="margin-bottom: 0;">
-            </div>
-
-            <div id="google-students-container">
-                <label style="font-weight: 600; color: #333; display: block; margin-bottom: 10px;">Student(s) *</label>
-                <div class="google-student-entry" data-student-index="0">
-                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                        <input type="text" class="auth-input google-student-name" placeholder="Student's Name" style="flex: 1; margin-bottom: 0;">
-                        <select class="auth-input google-student-level" style="width: 100px; margin-bottom: 0;">
-                            <option value="">Level</option>
-                            <option value="P3">P3</option>
-                            <option value="P4">P4</option>
-                            <option value="P5">P5</option>
-                            <option value="P6">P6</option>
-                        </select>
-                    </div>
+                <div style="display:flex; gap:10px; margin: 5px 0;">
+                    <select id="student-level" style="flex:1; padding:10px; border:1px solid #ddd; border-radius:8px;">
+                        <option value="">Select Level</option>
+                        <option value="P3">Primary 3</option>
+                        <option value="P4">Primary 4</option>
+                        <option value="P5">Primary 5</option>
+                        <option value="P6">Primary 6</option>
+                        <option value="S1">Secondary 1</option>
+                    </select>
+                    <select id="student-subject"
+                        style="flex:1; padding:10px; border:1px solid #ddd; border-radius:8px;">
+                        <option value="">Subject</option>
+                        <option value="Math">Math</option>
+                        <option value="Science">Science</option>
+                    </select>
                 </div>
             </div>
 
-            <button type="button" onclick="addGoogleStudentEntry()" style="width: 100%; padding: 10px; margin-bottom: 15px; background: #e3f2fd; border: 2px dashed #0984e3; border-radius: 8px; color: #0984e3; font-weight: 600; cursor: pointer;">
-                + Add Another Student
-            </button>
+            <input type="email" id="auth-email" placeholder="Email"
+                style="width:100%; padding:10px; margin:5px 0; border:1px solid #ddd; border-radius:8px;">
+            <input type="password" id="auth-pass" placeholder="Password"
+                style="width:100%; padding:10px; margin:5px 0; border:1px solid #ddd; border-radius:8px;">
 
-            <div class="auth-legal" style="margin-bottom: 1rem;">
-                <input type="checkbox" id="google-legal-agree" style="margin-top: 3px;">
-                <label for="google-legal-agree" style="font-size: 0.85rem; line-height: 1.4; cursor: pointer;">
-                    I agree to the terms and conditions of Polymath Learning Centre.
+            <div id="legal-box"
+                style="display:none; text-align:left; margin:15px 0; background:#f9f9f9; padding:10px; border-radius:8px; font-size:0.8rem; color:#555;">
+                <label style="display:flex; gap:10px; cursor:pointer;">
+                    <input type="checkbox" id="legal-agree" style="width:20px; height:20px;">
+                    <span>I confirm I am a registered student of Polymath Learning Centre and I am lawfully obliged to
+                        pay the monthly tuition fees for as long as I am using this application.</span>
                 </label>
             </div>
 
-            <button onclick="completeGoogleSetup()" class="auth-btn auth-btn-primary">Complete Setup</button>
+            <button id="btn-login" onclick="handleLogin()"
+                style="width:100%; padding:12px; background:#0984e3; color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer; margin-top:10px;">Login</button>
+
+            <button id="btn-google" onclick="handleGoogleLogin()"
+                style="width:100%; padding:12px; background:#fff; color:#757575; border:1px solid #ddd; border-radius:8px; font-weight:600; cursor:pointer; margin-top:10px; display:flex; align-items:center; justify-content:center; gap:10px;">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18">
+                Sign in with Google
+            </button>
+
+            <div style="margin-top:20px; font-size:0.85rem; color:#636e72;">
+                <a href="javascript:void(0)" onclick="handleResetPassword()"
+                    style="color:#0984e3; text-decoration:none;">Forgot Password?</a><br><br>
+                <span id="mode-text">Don't have an account?</span> <a href="javascript:void(0)"
+                    onclick="toggleAuthMode()" id="auth-switch"
+                    style="color:#0984e3; font-weight:600; cursor:pointer;">Sign Up</a>
+            </div>
+            <p id="auth-error" style="color:#d63031; font-size:0.8rem; margin-top:15px;"></p>
         </div>
     </div>
     <div id="brush-cursor" class="custom-cursor"></div>
@@ -2406,109 +2038,36 @@
 
     <div class="admin-panel" id="adminPanel" style="display:none;">
         <h3 class="admin-header">Admin: Add New Questions</h3>
-
-        <!-- Editing Indicator -->
-        <div id="editing-indicator" style="display:none; background: #fff3cd; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; color: #856404; justify-content: space-between; align-items: center;">
-            <span>Editing: <strong id="editing-question-name"></strong></span>
-            <button onclick="cancelEditing()" style="background: #856404; color: white; border: none; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">Cancel Edit</button>
-        </div>
-
-        <!-- Instructions -->
-        <div style="background: #e8f5e9; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem; color: #2e7d32;">
-            <strong>How to create a question:</strong>
-            <ol style="margin: 0.5rem 0 0 1.5rem; line-height: 1.8;">
-                <li>Fill in the <strong>metadata</strong> (School, Level, Topic, Difficulty)</li>
-                <li>Add <strong>Text blocks</strong> for question content</li>
-                <li>For fill-in-blank: Add <strong>Answer blocks</strong> and click "Preview" to select blanks</li>
-                <li>Click <strong>"Save Question"</strong> when done</li>
-            </ol>
-            <p style="margin-top: 0.5rem; font-size: 0.85rem;"><em>Tip: In Answer blocks, wrap words in [brackets] to automatically make them blanks</em></p>
-        </div>
-
-        <!-- Block Editor -->
-        <div id="admin-editor" style="background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 1rem;">
-            <!-- Question Metadata -->
-            <div style="margin-bottom: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-                    <div>
-                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #555;">School:</label>
-                        <input type="text" id="admin-school" placeholder="e.g., Polymath, ACS Junior" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-                    </div>
-                    <div>
-                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #555;">Level:</label>
-                        <select id="admin-level" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer;">
-                            <option value="P1">P1</option>
-                            <option value="P2">P2</option>
-                            <option value="P3">P3</option>
-                            <option value="P4">P4</option>
-                            <option value="P5" selected>P5</option>
-                            <option value="P6">P6</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #555;">Topic:</label>
-                        <input type="text" id="admin-topic" placeholder="e.g., Ratio, Fractions" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-                    </div>
-                    <div>
-                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #555;">Difficulty:</label>
-                        <select id="admin-difficulty" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer;">
-                            <option value="Easy">Easy</option>
-                            <option value="Medium" selected>Medium</option>
-                            <option value="Hard">Hard</option>
-                        </select>
-                    </div>
-                </div>
-                <div style="margin-bottom: 10px;">
-                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #555;">Answer:</label>
-                    <input type="text" id="admin-answer" placeholder="Enter the answer (e.g., 42, 3/4, $150)" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <div>
-                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #555;">Units (optional):</label>
-                        <input type="text" id="admin-units" placeholder="e.g., cm, kg, $" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-                    </div>
-                    <div>
-                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #555;">Tags:</label>
-                        <input type="text" id="admin-tags" placeholder="#Ratio #P6 #Hard" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Content Blocks Container -->
-            <div id="admin-blocks"></div>
-
-            <!-- Add Block Buttons -->
-            <div style="display: flex; gap: 0.8rem; margin-top: 1.5rem; border-top: 2px dashed #eee; padding-top: 1.5rem; flex-wrap: wrap; justify-content: center;">
-                <button class="admin-btn" onclick="addAdminBlock('text')" style="background: #e7f5ff; color: #007bff; padding: 10px 16px; border-radius: 20px; font-size: 0.85rem;">+ Add Text</button>
-                <button class="admin-btn" onclick="addAdminBlock('answer')" style="background: #fff9c4; color: #f9a825; border: 1px solid #fbc02d; padding: 10px 16px; border-radius: 20px; font-size: 0.85rem;">+ Add Answer Block</button>
-                <button class="admin-btn" onclick="addAdminBlock('explanation')" style="background: #f0f4ff; color: #007bff; border: 1px solid #007bff; padding: 10px 16px; border-radius: 20px; font-size: 0.85rem;">+ Add Explanation</button>
-                <button class="admin-btn" onclick="addAdminBlock('video')" style="background: #fff5f5; color: #dc3545; border: 1px solid #dc3545; padding: 10px 16px; border-radius: 20px; font-size: 0.85rem;">+ Add Video URL</button>
-                <button class="admin-btn" onclick="addAdminBlock('image')" style="background: #fdfdfd; border: 1px solid #ddd; color: #555; padding: 10px 16px; border-radius: 20px; font-size: 0.85rem;">+ Add Image URL</button>
-            </div>
-
-            <!-- Action Buttons -->
-            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid #eee; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
-                <button class="admin-btn" onclick="clearAdminForm()" style="background: #dc3545; color: white;">Clear Form</button>
-                <button class="admin-btn" onclick="previewAdminQuestion()" style="background: #28a745; color: white;">Preview & Select Blanks</button>
-                <button class="admin-btn" onclick="saveAdminQuestion()" style="background: var(--admin); color: white;">Save Question</button>
-            </div>
-        </div>
-
-        <!-- Preview Section -->
-        <div id="admin-preview-section" style="display: none; margin-top: 2rem;">
-            <h4 style="margin-bottom: 1rem;">Interactive Preview</h4>
-            <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Click words you want to turn into blanks. Yellow words will become fill-in-blank fields.</p>
-            <div id="admin-preview-content" style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 1px solid #ddd;"></div>
-        </div>
-
-        <!-- Mass Import Section -->
-        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid #eee;">
-            <h4 style="margin-bottom: 1rem; color: var(--admin);">Mass Import (JSON)</h4>
-            <textarea id="importData" placeholder='[{"s":"School","lvl":"P5","top":"Ratio","dif":"Medium","q":"Question","a":"Ans"}]' style="height: 80px;"></textarea>
-            <div style="display: flex; gap: 10px; margin-top: 10px;">
+        <div style="display:flex; gap:15px; margin-bottom:10px;">
+            <div style="flex:1">
+                <label>Paste JSON (Mass Import)</label>
+                <textarea id="importData"
+                    placeholder='[{"s":"School","lvl":"P5","top":"Ratio","dif":"Medium","q":"Question","a":"Ans"}]'></textarea>
                 <button class="admin-btn" onclick="importQuestions()">Import JSON</button>
-                <button class="admin-btn" style="background:#27ae60;" onclick="exportUpdatedFile()">Export Application Code</button>
             </div>
+            <div style="flex:1; background:#f9f9f9; padding:10px; border-radius:4px;">
+                <label>Add Single Question</label>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-bottom:5px;">
+                    <input type="text" id="newS" placeholder="School">
+                    <input type="text" id="newL" placeholder="Level (P5)">
+                    <input type="text" id="newT" placeholder="Topic">
+                    <input type="text" id="newD" placeholder="Difficulty">
+                </div>
+                <input type="text" id="newQ" placeholder="Question Text" style="margin-bottom:5px;">
+                <input type="text" id="newA" placeholder="Answer" style="margin-bottom:5px;">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-bottom:5px;">
+                    <input type="text" id="newImg" placeholder="Image URL">
+                    <input type="text" id="newVid" placeholder="Video URL">
+                </div>
+                <input type="text" id="newTags" placeholder="Tags (e.g. #Ratio #P6)" style="margin-bottom:5px;">
+                <textarea id="newExp" placeholder="Explanation (optional)" style="height:60px;"></textarea>
+                <button class="admin-btn" onclick="addSingleQuestion()">Add Question</button>
+            </div>
+        </div>
+        <div style="display:flex; gap:10px; border-top:1px solid #eee; padding-top:10px;">
+            <button class="admin-btn" style="background:#27ae60;" onclick="exportUpdatedFile()"
+                data-tooltip="Saves the entire application including the database locally.">Export Application Code
+                💾</button>
         </div>
     </div>
     <div id="brush-cursor" class="brush-cursor"></div>
@@ -6125,7 +5684,7 @@
                         <span>${item.s || 'No School'} • ${item.lvl || 'No Lvl'} • ${item.top || 'No Topic'}</span>
                         <span style="background:${getDiffColor(item.dif)}; color:white; padding:2px 6px; border-radius:4px; font-size:0.75rem;">${item.dif}</span>
                     </div>
-                    <div class="browse-item-q">${stripHTML(formatText(item.q || '')).substring(0, 150)}${(item.q || '').length > 150 ? '...' : ''}</div>
+                    <div class="browse-item-q">${stripHTML(formatText(item.q)).substring(0, 150)}${item.q.length > 150 ? '...' : ''}</div>
                     <div class="browse-item-footer">
                         <button onclick="addFromBrowse('${item.id}', this)" class="add-to-paper-btn" style="padding: 6px 12px; font-size: 0.8rem; flex-shrink:0;">Add to Worksheet</button>
                     </div>
@@ -6371,7 +5930,7 @@
                 showToast("Already in worksheet!");
                 return;
             }
-            currentPaperQuestions.push(JSON.parse(JSON.stringify(q)));
+            currentPaperQuestions.push(q);
             addedQuestionIds.add(dbIndex);
             const btn = document.getElementById(`add-btn-${dbIndex}`);
             if (btn) { btn.classList.add('added'); btn.textContent = '✓ Added'; btn.disabled = true; }
@@ -6424,7 +5983,7 @@
             isAdaptiveMode = false;
             document.body.classList.remove('adaptive-mode');
 
-            currentPaperQuestions = db.filter(q => flaggedIds.has(q.id)).map(q => JSON.parse(JSON.stringify(q)));
+            currentPaperQuestions = db.filter(q => flaggedIds.has(q.id));
             if (currentPaperQuestions.length === 0) {
                 alert("No flagged questions to review!");
                 isReviewMode = false;
@@ -6661,7 +6220,7 @@
                 [pool[i], pool[j]] = [pool[j], pool[i]];
             }
 
-            currentPaperQuestions = pool.slice(0, qCount).map(q => JSON.parse(JSON.stringify(q)));
+            currentPaperQuestions = pool.slice(0, qCount);
             renderPaper();
             closeGenModal();
             showToast(`Generated worksheet with ${currentPaperQuestions.length} questions`);
@@ -6689,10 +6248,6 @@
 
             currentPaperQuestions.forEach((item, index) => {
                 try {
-                    // Ensure question and answer fields exist
-                    if (!item.q) item.q = '';
-                    if (!item.a) item.a = '';
-
                     const formattedQ = formatText(item.q);
                     const formattedA = formatText(item.a);
                     const mcqData = parseMCQ(item.q);
@@ -7174,8 +6729,7 @@
             isReviewMode = false;
             const vault = JSON.parse(localStorage.getItem('mathGenVault')) || [];
             if (vault.length === 0) { alert("Vault is empty!"); return; }
-            // Always prefer fresh data from db over potentially stale qRef, and deep copy
-            currentPaperQuestions = vault.map(v => db.find(q => q.id === v.id) || v.qRef).filter(Boolean).map(q => JSON.parse(JSON.stringify(q)));
+            currentPaperQuestions = vault.map(v => v.qRef || db.find(q => q.id === v.id)).filter(Boolean);
             renderPaper();
             showToast(`Loaded ${currentPaperQuestions.length} from Vault`);
         }
@@ -7249,7 +6803,7 @@
         }
 
         function renderAdaptiveQuestion(q, isVault) {
-            currentPaperQuestions = [JSON.parse(JSON.stringify(q))];
+            currentPaperQuestions = [q];
             renderPaper();
             const sheet = document.querySelector('.sheet');
             if (sheet) {
@@ -7361,13 +6915,7 @@
             try {
                 const newQs = JSON.parse(document.getElementById('importData').value);
                 if (!Array.isArray(newQs)) throw "Not an array";
-                newQs.forEach(q => {
-                    // Ensure required fields exist
-                    if (!q.q) q.q = '';
-                    if (!q.a) q.a = '';
-                    q.id = 'q_' + Date.now() + Math.random();
-                    db.push(q);
-                });
+                newQs.forEach(q => { q.id = 'q_' + Date.now() + Math.random(); db.push(q); });
                 updateDropdowns();
                 updateDbCount();
                 populateSearchFilters();
@@ -7387,467 +6935,6 @@
             a.click();
         }
 
-        // ============ BLOCK-BASED QUESTION EDITOR ============
-        window.adminBlocks = [];
-        window.editingQuestionId = null;
-
-        function addAdminBlock(type) {
-            const id = Date.now();
-            const block = { id, type, value: '' };
-
-            // Video and explanation should always be at the end
-            if (type === 'video' || type === 'explanation') {
-                window.adminBlocks.push(block);
-            } else {
-                // Insert before any video/explanation blocks
-                const lastContentIndex = window.adminBlocks.findIndex(b => b.type === 'video' || b.type === 'explanation');
-                if (lastContentIndex === -1) {
-                    window.adminBlocks.push(block);
-                } else {
-                    window.adminBlocks.splice(lastContentIndex, 0, block);
-                }
-            }
-            renderAdminBlocks();
-        }
-
-        function removeAdminBlock(id) {
-            window.adminBlocks = window.adminBlocks.filter(b => b.id !== id);
-            renderAdminBlocks();
-        }
-
-        function updateBlockValue(id, value) {
-            const block = window.adminBlocks.find(b => b.id === id);
-            if (block) block.value = value;
-        }
-
-        function updateBlockValueFromEditor(blockId) {
-            const editor = document.getElementById(`editor-${blockId}`);
-            if (!editor) return;
-            const block = window.adminBlocks.find(b => b.id === blockId);
-            if (block) block.value = editor.innerHTML;
-        }
-
-        function renderAdminBlocks() {
-            const container = document.getElementById('admin-blocks');
-            if (!container) return;
-
-            let html = '';
-            let addedSeparator = false;
-
-            window.adminBlocks.forEach((block, index) => {
-                // Add separator before first video/explanation block
-                if (!addedSeparator && (block.type === 'video' || block.type === 'explanation')) {
-                    html += `<div style="margin: 1.5rem 0; padding: 0.8rem; background: linear-gradient(90deg, #e3f2fd 0%, #f5f5f5 50%, #e3f2fd 100%); border-radius: 8px; text-align: center;">
-                        <span style="color: #666; font-size: 0.85rem; font-weight: 500;">Shown after student answers (drag blocks above to reorder)</span>
-                    </div>`;
-                    addedSeparator = true;
-                }
-
-                let inputHtml = '';
-                if (block.type === 'text' || block.type === 'answer' || block.type === 'explanation') {
-                    const placeholders = {
-                        'answer': 'Enter text to be blanked... Use [brackets] around words to make them blanks.',
-                        'explanation': 'Enter step-by-step explanation or solution...',
-                        'text': 'Enter question text...'
-                    };
-
-                    // Add formatting toolbar
-                    const formattingToolbar = `
-                        <div class="text-formatting-toolbar">
-                            <div class="toolbar-group">
-                                <button type="button" onclick="formatText(${block.id}, 'bold')" class="format-btn" title="Bold (Ctrl+B)"><strong>B</strong></button>
-                                <button type="button" onclick="formatText(${block.id}, 'italic')" class="format-btn" title="Italic (Ctrl+I)"><em>I</em></button>
-                                <button type="button" onclick="formatText(${block.id}, 'underline')" class="format-btn" title="Underline (Ctrl+U)"><u>U</u></button>
-                            </div>
-                            <div class="toolbar-group">
-                                <button type="button" onclick="formatText(${block.id}, 'justifyLeft')" class="format-btn" title="Align Left">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>
-                                </button>
-                                <button type="button" onclick="formatText(${block.id}, 'justifyCenter')" class="format-btn" title="Align Center">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
-                                </button>
-                                <button type="button" onclick="formatText(${block.id}, 'justifyRight')" class="format-btn" title="Align Right">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="6" y1="18" x2="21" y2="18"/></svg>
-                                </button>
-                            </div>
-                            <div class="toolbar-group" style="border-right: none;">
-                                <button type="button" onclick="formatText(${block.id}, 'insertUnorderedList')" class="format-btn" title="Bullet List">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="4" cy="6" r="1.5" fill="currentColor"/><circle cx="4" cy="12" r="1.5" fill="currentColor"/><circle cx="4" cy="18" r="1.5" fill="currentColor"/><line x1="9" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="9" y1="18" x2="21" y2="18"/></svg>
-                                </button>
-                                <button type="button" onclick="formatText(${block.id}, 'insertOrderedList')" class="format-btn" title="Numbered List">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><text x="2" y="8" font-size="6" fill="currentColor">1</text><text x="2" y="14" font-size="6" fill="currentColor">2</text><text x="2" y="20" font-size="6" fill="currentColor">3</text><line x1="9" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="9" y1="18" x2="21" y2="18"/></svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div id="editor-${block.id}"
-                             class="rich-text-editor"
-                             contenteditable="true"
-                             data-placeholder="${placeholders[block.type]}"
-                             oninput="updateBlockValueFromEditor(${block.id})"
-                             onpaste="handleEditorPaste(event)"
-                             onkeydown="handleEditorKeydown(event, ${block.id})"
-                        >${block.value || ''}</div>
-                    `;
-                    inputHtml = formattingToolbar;
-                } else if (block.type === 'image') {
-                    const previewUrl = convertDropboxUrl(block.value);
-                    inputHtml = `
-                        <input type="text" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-top: 10px; box-sizing: border-box;"
-                               oninput="updateBlockValue(${block.id}, this.value); updateImagePreview(${block.id})"
-                               value="${block.value || ''}"
-                               placeholder="Enter image URL (Dropbox, Imgur, etc.)...">
-                        <div id="img-preview-${block.id}" style="margin-top: 10px; text-align: center;">
-                            ${block.value ? `<img src="${previewUrl}" style="max-width: 200px; max-height: 150px; border-radius: 8px; border: 1px solid #ddd;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"><span style="display: none; color: #dc3545; font-size: 0.85rem;">Image failed to load</span>` : '<span style="color: #888; font-size: 0.85rem;">Image preview will appear here</span>'}
-                        </div>
-                    `;
-                } else if (block.type === 'video') {
-                    inputHtml = `<input type="text" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-top: 10px; box-sizing: border-box;"
-                                       oninput="updateBlockValue(${block.id}, this.value)"
-                                       value="${block.value || ''}"
-                                       placeholder="Enter Video URL (Dropbox or YouTube)...">`;
-                }
-
-                const typeColors = {
-                    'answer': 'background: #fffdf0; border-color: #fbc02d;',
-                    'explanation': 'background: #f0f4ff; border-color: #007bff;',
-                    'video': 'background: #fdf2f2; border-color: #dc3545;',
-                    'image': 'background: #f5f5f5; border-color: #9e9e9e;',
-                    'text': ''
-                };
-
-                const typeLabels = {
-                    'text': 'TEXT BLOCK',
-                    'answer': 'ANSWER BLOCK (fill-in-blank)',
-                    'explanation': 'EXPLANATION (shown after answer)',
-                    'video': 'VIDEO (shown after answer)',
-                    'image': 'IMAGE BLOCK'
-                };
-
-                // Only text, image, and answer blocks are draggable
-                const isDraggable = ['text', 'image', 'answer'].includes(block.type);
-                const dragAttrs = isDraggable ? `draggable="true"
-                             ondragstart="handleDragStart(event, ${block.id})"
-                             ondragend="handleDragEnd(event)"
-                             ondragover="handleDragOver(event)"
-                             ondragleave="handleDragLeave(event)"
-                             ondrop="handleDrop(event, ${block.id})"` : '';
-                const dragHandle = isDraggable ? `<span class="drag-handle" title="Drag to reorder">⋮⋮</span>` : '';
-                const leftPadding = isDraggable ? '40px' : '1rem';
-
-                html += `
-                    <div class="admin-block ${isDraggable ? '' : 'no-drag'}" data-block-id="${block.id}" ${dragAttrs}
-                         style="margin-bottom: 1rem; position: relative; padding: 1rem 1rem 1rem ${leftPadding}; border: 1px solid #eee; border-radius: 8px; ${typeColors[block.type] || ''}">
-                        ${dragHandle}
-                        <span style="font-size: 0.8rem; color: #666; font-weight: 600;">${typeLabels[block.type] || block.type.toUpperCase()}</span>
-                        <button onclick="removeAdminBlock(${block.id})" style="position: absolute; right: 10px; top: 10px; border: none; background: none; cursor: pointer; color: #dc3545; font-size: 1.2rem;">✕</button>
-                        ${inputHtml}
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-            initDragAndDrop();
-        }
-
-        // Text formatting functions
-        function formatText(blockId, command) {
-            const editor = document.getElementById(`editor-${blockId}`);
-            if (!editor) return;
-            editor.focus();
-            document.execCommand(command, false, null);
-            updateBlockValueFromEditor(blockId);
-        }
-
-        function handleEditorKeydown(event, blockId) {
-            if ((event.ctrlKey || event.metaKey) && event.key === 'b') {
-                event.preventDefault();
-                formatText(blockId, 'bold');
-            } else if ((event.ctrlKey || event.metaKey) && event.key === 'i') {
-                event.preventDefault();
-                formatText(blockId, 'italic');
-            } else if ((event.ctrlKey || event.metaKey) && event.key === 'u') {
-                event.preventDefault();
-                formatText(blockId, 'underline');
-            }
-        }
-
-        function handleEditorPaste(event) {
-            event.preventDefault();
-            const text = event.clipboardData.getData('text/html') || event.clipboardData.getData('text/plain');
-            const temp = document.createElement('div');
-            temp.innerHTML = text;
-            temp.querySelectorAll('script, style, meta, link').forEach(el => el.remove());
-            document.execCommand('insertHTML', false, temp.innerHTML);
-        }
-
-        // Drag and drop functions
-        let draggedBlockId = null;
-
-        function initDragAndDrop() {
-            document.querySelectorAll('.admin-block').forEach(block => {
-                block.addEventListener('dragenter', (e) => e.preventDefault());
-            });
-        }
-
-        function handleDragStart(event, blockId) {
-            draggedBlockId = blockId;
-            event.target.classList.add('dragging');
-            event.dataTransfer.effectAllowed = 'move';
-        }
-
-        function handleDragEnd(event) {
-            event.target.classList.remove('dragging');
-            document.querySelectorAll('.admin-block').forEach(b => b.classList.remove('drag-over'));
-            draggedBlockId = null;
-        }
-
-        function handleDragOver(event) {
-            event.preventDefault();
-            const block = event.target.closest('.admin-block');
-            if (block && !block.classList.contains('dragging')) {
-                document.querySelectorAll('.admin-block').forEach(b => b.classList.remove('drag-over'));
-                block.classList.add('drag-over');
-            }
-        }
-
-        function handleDragLeave(event) {
-            const block = event.target.closest('.admin-block');
-            if (block) block.classList.remove('drag-over');
-        }
-
-        function handleDrop(event, targetBlockId) {
-            event.preventDefault();
-            if (!draggedBlockId || draggedBlockId === targetBlockId) return;
-
-            const draggedIndex = window.adminBlocks.findIndex(b => b.id === draggedBlockId);
-            const targetIndex = window.adminBlocks.findIndex(b => b.id === targetBlockId);
-
-            if (draggedIndex === -1 || targetIndex === -1) return;
-
-            const [draggedBlock] = window.adminBlocks.splice(draggedIndex, 1);
-            window.adminBlocks.splice(targetIndex, 0, draggedBlock);
-
-            renderAdminBlocks();
-        }
-
-        // Image preview function
-        function updateImagePreview(blockId) {
-            const block = window.adminBlocks.find(b => b.id === blockId);
-            if (!block) return;
-            const previewDiv = document.getElementById(`img-preview-${blockId}`);
-            if (!previewDiv) return;
-
-            if (block.value) {
-                const previewUrl = convertDropboxUrl(block.value);
-                previewDiv.innerHTML = `<img src="${previewUrl}" style="max-width: 200px; max-height: 150px; border-radius: 8px; border: 1px solid #ddd;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"><span style="display: none; color: #dc3545; font-size: 0.85rem;">Image failed to load</span>`;
-            } else {
-                previewDiv.innerHTML = '<span style="color: #888; font-size: 0.85rem;">Image preview will appear here</span>';
-            }
-        }
-
-        function convertDropboxUrl(url) {
-            if (!url) return '';
-            if (url.includes('dropbox.com')) {
-                return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('?dl=0', '').replace('?raw=1', '');
-            }
-            return url;
-        }
-
-        // Preview and blank selection
-        function previewAdminQuestion() {
-            if (window.adminBlocks.length === 0) {
-                alert("Please add some content blocks first.");
-                return;
-            }
-
-            const previewSection = document.getElementById('admin-preview-section');
-            const previewContent = document.getElementById('admin-preview-content');
-
-            let html = '';
-            let afterAnswerHtml = '';
-
-            window.adminBlocks.forEach(block => {
-                if (block.type === 'text' && block.value) {
-                    html += `<div style="margin-bottom: 1.5rem; line-height: 1.8;">${block.value}</div>`;
-                } else if (block.type === 'answer' && block.value) {
-                    // Wrap each word in a clickable span
-                    let processedValue = block.value;
-                    // Handle [bracketed] words - mark them as blanks automatically
-                    processedValue = processedValue.replace(/\[([^\]]+)\]/g, '<span class="admin-word is-blank">$1</span>');
-                    // Wrap remaining words
-                    processedValue = processedValue.replace(/(?<![>\w])(\b\w+\b)(?![<\w])/g, (match, word) => {
-                        if (match.includes('admin-word')) return match;
-                        return `<span class="admin-word">${word}</span>`;
-                    });
-                    html += `<div style="margin-bottom: 1.5rem; line-height: 2; padding: 1rem; background: #fffdf0; border-radius: 8px; border: 1px solid #fbc02d;">${processedValue}</div>`;
-                } else if (block.type === 'explanation' && block.value) {
-                    afterAnswerHtml += `<div class="explanation-box" style="margin-top: 1.5rem; padding: 1rem; background: #f0f4ff; border-left: 4px solid #007bff; border-radius: 8px;">
-                        <h4 style="margin: 0 0 0.5rem 0; color: #007bff;">Explanation</h4>
-                        <div>${block.value}</div>
-                    </div>`;
-                } else if (block.type === 'image' && block.value) {
-                    const imageUrl = convertDropboxUrl(block.value);
-                    html += `<img src="${imageUrl}" style="max-width: 100%; border-radius: 8px; margin-bottom: 1.5rem; display: block;">`;
-                } else if (block.type === 'video' && block.value) {
-                    let videoUrl = block.value;
-                    if (videoUrl.includes('dropbox.com')) {
-                        videoUrl = videoUrl.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('?dl=0', '').replace('?raw=1', '');
-                    } else if (videoUrl.includes('youtube.com/watch?v=')) {
-                        videoUrl = videoUrl.replace('watch?v=', 'embed/');
-                    } else if (videoUrl.includes('youtu.be/')) {
-                        videoUrl = videoUrl.replace('youtu.be/', 'youtube.com/embed/');
-                    }
-                    afterAnswerHtml += `<div style="margin-top: 1.5rem; border-radius: 12px; overflow: hidden;">
-                        <iframe src="${videoUrl}" style="width: 100%; height: 315px; border: none;" allowfullscreen></iframe>
-                    </div>`;
-                }
-            });
-
-            html += afterAnswerHtml;
-            previewContent.innerHTML = html;
-
-            // Add click handlers to words
-            previewContent.querySelectorAll('.admin-word').forEach(word => {
-                word.addEventListener('click', function() {
-                    this.classList.toggle('is-blank');
-                });
-            });
-
-            previewSection.style.display = 'block';
-            previewSection.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Save question
-        function saveAdminQuestion() {
-            const school = document.getElementById('admin-school').value.trim();
-            const level = document.getElementById('admin-level').value;
-            const topic = document.getElementById('admin-topic').value.trim();
-            const difficulty = document.getElementById('admin-difficulty').value;
-            const answer = document.getElementById('admin-answer').value.trim();
-            const units = document.getElementById('admin-units').value.trim();
-            const tags = document.getElementById('admin-tags').value.trim();
-
-            if (!school || !topic || !answer) {
-                alert("Please fill in School, Topic, and Answer.");
-                return;
-            }
-
-            // Build question HTML from blocks
-            let questionHtml = '';
-            let explanationHtml = '';
-            let videoUrl = '';
-            let imageUrl = '';
-
-            window.adminBlocks.forEach(block => {
-                if (block.type === 'text' && block.value) {
-                    questionHtml += block.value + '<br><br>';
-                } else if (block.type === 'answer' && block.value) {
-                    // Check for preview content with selected blanks
-                    const previewContent = document.getElementById('admin-preview-content');
-                    if (previewContent && previewContent.innerHTML.trim()) {
-                        // Use selected blanks from preview
-                        const clone = previewContent.cloneNode(true);
-                        const selectedWords = clone.querySelectorAll('.admin-word.is-blank');
-                        selectedWords.forEach(word => {
-                            const ans = word.textContent.trim();
-                            word.outerHTML = `<input type="text" class="student-input" data-answer="${ans}" style="width: 80px;">`;
-                        });
-                        clone.querySelectorAll('.admin-word:not(.is-blank)').forEach(word => {
-                            word.outerHTML = word.textContent;
-                        });
-                        questionHtml += clone.innerHTML;
-                    } else {
-                        // Parse [word] as blanks
-                        let answerHtml = block.value.replace(/\[([^\]]+)\]/g, (match, ans) => {
-                            return `<input type="text" class="student-input" data-answer="${ans.trim()}" style="width: 80px;">`;
-                        });
-                        questionHtml += answerHtml + '<br><br>';
-                    }
-                } else if (block.type === 'explanation' && block.value) {
-                    explanationHtml = block.value;
-                } else if (block.type === 'image' && block.value) {
-                    imageUrl = convertDropboxUrl(block.value);
-                } else if (block.type === 'video' && block.value) {
-                    videoUrl = block.value;
-                    if (videoUrl.includes('dropbox.com')) {
-                        videoUrl = videoUrl.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('?dl=0', '').replace('?raw=1', '');
-                    }
-                }
-            });
-
-            // If no question text was generated, provide a fallback
-            if (!questionHtml.trim()) {
-                questionHtml = "Question text here...";
-            }
-
-            // Create the question object
-            const newQuestion = {
-                s: school,
-                lvl: level,
-                top: topic,
-                dif: difficulty,
-                q: questionHtml.trim(),
-                a: answer,
-                u: units,
-                img: imageUrl,
-                vid: videoUrl,
-                tags: tags,
-                exp: explanationHtml,
-                id: 'q_' + Date.now()
-            };
-
-            // Add to database
-            db.push(newQuestion);
-            updateDropdowns();
-            updateDbCount();
-            populateSearchFilters();
-
-            alert("Question added successfully!");
-            clearAdminForm(true);
-        }
-
-        // Clear form
-        function clearAdminForm(force = false) {
-            if (!force && window.adminBlocks.length > 0 && !confirm("Clear all content? This cannot be undone.")) return;
-
-            window.adminBlocks = [];
-            window.editingQuestionId = null;
-            renderAdminBlocks();
-
-            document.getElementById('admin-school').value = '';
-            document.getElementById('admin-level').value = 'P5';
-            document.getElementById('admin-topic').value = '';
-            document.getElementById('admin-difficulty').value = 'Medium';
-            document.getElementById('admin-answer').value = '';
-            document.getElementById('admin-units').value = '';
-            document.getElementById('admin-tags').value = '';
-
-            document.getElementById('admin-preview-section').style.display = 'none';
-            document.getElementById('admin-preview-content').innerHTML = '';
-
-            updateEditingIndicator();
-        }
-
-        // Cancel editing
-        function cancelEditing() {
-            if (window.adminBlocks.length > 0 && !confirm("Cancel editing? Unsaved changes will be lost.")) return;
-            window.editingQuestionId = null;
-            clearAdminForm(true);
-        }
-
-        // Update editing indicator
-        function updateEditingIndicator() {
-            const indicator = document.getElementById('editing-indicator');
-            const nameSpan = document.getElementById('editing-question-name');
-
-            if (window.editingQuestionId) {
-                indicator.style.display = 'flex';
-                nameSpan.textContent = window.editingQuestionId;
-            } else {
-                indicator.style.display = 'none';
-            }
-        }
-
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && e.target.classList.contains('student-input')) {
@@ -7860,7 +6947,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, increment, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAUSI3Uh28IeqASEp0JhH4QPaVt-O3meBo",
@@ -7874,181 +6961,26 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        window.auth = auth;
         const db_fs = getFirestore(app);
-        window.db_fs = db_fs;
         const googleProvider = new GoogleAuthProvider();
 
         let isSignUpMode = false;
 
-        // ============ ELO RATING SYSTEM ============
-        const RATING_CONFIG = {
-            DEFAULT_QUESTION_RATING: 1200,
-            DEFAULT_STUDENT_RATING: 1000,
-            MIN_RATING: 400,
-            MAX_RATING: 2400,
-            K_FACTOR_BASE: 32,
-            K_FACTOR_MIN: 8,
-            GROWTH_ZONE_MIN: 0.35,
-            GROWTH_ZONE_MAX: 0.75,
-            CONFIDENCE_THRESHOLD: 20
-        };
-        window.RATING_CONFIG = RATING_CONFIG;
-
-        window.calculateExpectedSuccess = function(studentRating, questionRating) {
-            const exponent = (questionRating - studentRating) / 400;
-            return 1 / (1 + Math.pow(10, exponent));
-        };
-
-        window.calculateKFactor = function(attempts) {
-            if (attempts <= 0) return RATING_CONFIG.K_FACTOR_BASE;
-            const confidence = Math.min(attempts / RATING_CONFIG.CONFIDENCE_THRESHOLD, 1);
-            return Math.max(RATING_CONFIG.K_FACTOR_MIN, RATING_CONFIG.K_FACTOR_BASE * (1 - confidence * 0.75));
-        };
-
-        window.calculateRatingUpdate = function(studentRating, questionRating, isCorrect, studentAttempts, questionAttempts) {
-            const expected = window.calculateExpectedSuccess(studentRating, questionRating);
-            const actual = isCorrect ? 1 : 0;
-            const studentK = window.calculateKFactor(studentAttempts);
-            const questionK = window.calculateKFactor(questionAttempts);
-            const studentChange = studentK * (actual - expected);
-            const questionChange = -questionK * (actual - expected) * 0.5;
-            let newStudentRating = Math.round(studentRating + studentChange);
-            let newQuestionRating = Math.round(questionRating + questionChange);
-            newStudentRating = Math.max(RATING_CONFIG.MIN_RATING, Math.min(RATING_CONFIG.MAX_RATING, newStudentRating));
-            newQuestionRating = Math.max(RATING_CONFIG.MIN_RATING, Math.min(RATING_CONFIG.MAX_RATING, newQuestionRating));
-            return { newStudentRating, newQuestionRating, studentChange: Math.round(studentChange), questionChange: Math.round(questionChange), expected: Math.round(expected * 100) };
-        };
-
-        window.isInGrowthZone = function(studentRating, questionRating) {
-            const expected = window.calculateExpectedSuccess(studentRating, questionRating);
-            return expected >= RATING_CONFIG.GROWTH_ZONE_MIN && expected <= RATING_CONFIG.GROWTH_ZONE_MAX;
-        };
-
-        window.getDifficultyLabel = function(studentRating, questionRating) {
-            const expected = window.calculateExpectedSuccess(studentRating, questionRating);
-            if (expected >= 0.85) return { label: 'Easy', color: '#4CAF50', icon: '🟢' };
-            if (expected >= 0.70) return { label: 'Moderate', color: '#8BC34A', icon: '🟡' };
-            if (expected >= 0.50) return { label: 'Challenging', color: '#FF9800', icon: '🟠' };
-            if (expected >= 0.35) return { label: 'Hard', color: '#f44336', icon: '🔴' };
-            return { label: 'Very Hard', color: '#9C27B0', icon: '⚫' };
-        };
-
-        window.getRatingTier = function(rating) {
-            if (rating >= 2000) return { tier: 'Master', color: '#9C27B0' };
-            if (rating >= 1600) return { tier: 'Expert', color: '#673AB7' };
-            if (rating >= 1400) return { tier: 'Advanced', color: '#3F51B5' };
-            if (rating >= 1200) return { tier: 'Intermediate', color: '#2196F3' };
-            if (rating >= 1000) return { tier: 'Developing', color: '#4CAF50' };
-            if (rating >= 800) return { tier: 'Beginner', color: '#FF9800' };
-            return { tier: 'Novice', color: '#f44336' };
-        };
-
-        window.questionRatings = {};
-
-        window.loadQuestionRatings = async function() {
-            try {
-                const user = window.auth?.currentUser;
-                if (!user || !window.db_fs) return;
-                const ratingsRef = collection(window.db_fs, "question_ratings");
-                const snapshot = await getDocs(ratingsRef);
-                window.questionRatings = {};
-                snapshot.forEach(d => { window.questionRatings[d.id] = d.data(); });
-                console.log(`Loaded ${Object.keys(window.questionRatings).length} question ratings`);
-            } catch (e) { console.error("Error loading question ratings:", e); }
-        };
-
-        window.getQuestionRating = function(questionId) {
-            if (window.questionRatings[questionId]) return window.questionRatings[questionId];
-            return { rating: RATING_CONFIG.DEFAULT_QUESTION_RATING, attempts: 0, correctCount: 0, lastUpdated: null };
-        };
-
-        window.updateQuestionRating = async function(questionId, newRating, isCorrect) {
-            try {
-                const user = window.auth?.currentUser;
-                if (!user || !window.db_fs) return;
-                const currentData = window.getQuestionRating(questionId);
-                const updatedData = { rating: newRating, attempts: (currentData.attempts || 0) + 1, correctCount: (currentData.correctCount || 0) + (isCorrect ? 1 : 0), lastUpdated: new Date() };
-                await setDoc(doc(window.db_fs, "question_ratings", questionId), updatedData);
-                window.questionRatings[questionId] = updatedData;
-            } catch (e) { console.error("Error updating question rating:", e); }
-        };
-
-        window.getStudentRating = async function(studentIndex = 0) {
-            try {
-                const user = window.auth?.currentUser;
-                if (!user || !window.db_fs) return { rating: RATING_CONFIG.DEFAULT_STUDENT_RATING, attempts: 0 };
-                const userDoc = await getDoc(doc(window.db_fs, "users", user.uid));
-                if (userDoc.exists()) {
-                    const data = userDoc.data();
-                    const students = data.students || [];
-                    if (students[studentIndex] && students[studentIndex].rating !== undefined) {
-                        return { rating: students[studentIndex].rating, attempts: students[studentIndex].totalAttempts || 0 };
-                    }
-                }
-                return { rating: RATING_CONFIG.DEFAULT_STUDENT_RATING, attempts: 0 };
-            } catch (e) { console.error("Error getting student rating:", e); return { rating: RATING_CONFIG.DEFAULT_STUDENT_RATING, attempts: 0 }; }
-        };
-
-        window.updateStudentRating = async function(studentIndex, newRating, isCorrect) {
-            try {
-                const user = window.auth?.currentUser;
-                if (!user || !window.db_fs) return;
-                const userRef = doc(window.db_fs, "users", user.uid);
-                const userSnap = await getDoc(userRef);
-                if (!userSnap.exists()) return;
-                const data = userSnap.data();
-                const students = data.students || [];
-                if (!students[studentIndex]) return;
-                if (students[studentIndex].startingRating === undefined) students[studentIndex].startingRating = RATING_CONFIG.DEFAULT_STUDENT_RATING;
-                students[studentIndex].rating = Math.round(newRating);
-                students[studentIndex].totalAttempts = (students[studentIndex].totalAttempts || 0) + 1;
-                if (isCorrect) students[studentIndex].correctCount = (students[studentIndex].correctCount || 0) + 1;
-                await updateDoc(userRef, { students });
-            } catch (e) { console.error("Error updating student rating:", e); }
-        };
-
-        // ============ AUTH FUNCTIONS ============
         window.toggleAuthMode = () => {
             isSignUpMode = !isSignUpMode;
-            document.querySelector('.auth-toggle-link').innerText = isSignUpMode ? "Already have an account? Login" : "New here? Create an Account";
-            document.getElementById('reg-fields').style.display = isSignUpMode ? "block" : "none";
-            document.getElementById('legal-box').style.display = isSignUpMode ? "block" : "none";
-            document.getElementById('btn-google').style.display = isSignUpMode ? "none" : "flex";
-            document.getElementById('auth-title').innerText = isSignUpMode ? "Create New Account" : "Welcome Back!";
-            document.getElementById('auth-subtitle').innerText = isSignUpMode ? "Register to start your learning journey" : "Sign in to continue your learning journey";
-            document.getElementById('btn-login').innerText = isSignUpMode ? "Create Account" : "Login";
-            document.getElementById('forgot-password-link').style.display = isSignUpMode ? "none" : "block";
-            document.getElementById('auth-pass-confirm').style.display = isSignUpMode ? "block" : "none";
-            document.getElementById('auth-pass').placeholder = isSignUpMode ? "Create Password" : "Password";
+            const regFields = document.getElementById('reg-fields');
+            const legalBox = document.getElementById('legal-box');
+            const googleBtn = document.getElementById('btn-google');
+
+            document.getElementById('auth-title').innerText = isSignUpMode ? "Register Student Account" : "Welcome Back!";
+            document.getElementById('btn-login').innerText = isSignUpMode ? "Confirm Registration" : "Login";
+            document.getElementById('auth-switch').innerText = isSignUpMode ? "Login" : "Sign Up";
+            document.getElementById('mode-text').innerText = isSignUpMode ? "Already a student?" : "Don't have an account?";
+
+            regFields.style.display = isSignUpMode ? "block" : "none";
+            legalBox.style.display = isSignUpMode ? "block" : "none";
+            googleBtn.style.display = isSignUpMode ? "none" : "flex";
             document.getElementById('auth-error').innerText = "";
-        };
-
-        function getStudentsData() {
-            const students = [];
-            document.querySelectorAll('.student-entry').forEach(entry => {
-                const name = entry.querySelector('.student-name').value.trim();
-                const level = entry.querySelector('.student-level').value;
-                if (name && level) students.push({ name, level, rating: RATING_CONFIG.DEFAULT_STUDENT_RATING });
-            });
-            return students;
-        }
-
-        window.addStudentEntry = function() {
-            const container = document.getElementById('students-container');
-            const entries = container.querySelectorAll('.student-entry');
-            const newIndex = entries.length;
-            const entryDiv = document.createElement('div');
-            entryDiv.className = 'student-entry';
-            entryDiv.dataset.studentIndex = newIndex;
-            entryDiv.innerHTML = `<div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                <input type="text" class="auth-input student-name" placeholder="Student's Name" style="flex: 1; margin-bottom: 0;">
-                <select class="auth-input student-level" style="width: 100px; margin-bottom: 0;">
-                    <option value="">Level</option><option value="P3">P3</option><option value="P4">P4</option><option value="P5">P5</option><option value="P6">P6</option>
-                </select>
-                <button type="button" onclick="this.parentElement.parentElement.remove()" style="background: #ffebee; border: none; border-radius: 8px; width: 40px; color: #f44336; font-size: 1.2rem; cursor: pointer;">×</button>
-            </div>`;
-            container.appendChild(entryDiv);
         };
 
         async function trackLoginDays(user) {
@@ -8075,115 +7007,39 @@
             const email = document.getElementById('auth-email').value;
             const pass = document.getElementById('auth-pass').value;
             const errorMsg = document.getElementById('auth-error');
-            errorMsg.style.color = "#dc3545";
-            if (!email || !pass) { errorMsg.innerText = "Fields cannot be empty."; return; }
+            if (!email || !pass) { errorMsg.innerText = "Enter email and password."; return; }
             try {
                 if (isSignUpMode) {
-                    const passConfirm = document.getElementById('auth-pass-confirm').value;
-                    if (pass !== passConfirm) { errorMsg.innerText = "Passwords do not match."; return; }
-                    if (pass.length < 6) { errorMsg.innerText = "Password must be at least 6 characters."; return; }
                     const pName = document.getElementById('parent-name').value;
-                    const students = getStudentsData();
-                    if (!pName) { errorMsg.innerText = "Please enter parent's name."; return; }
-                    if (students.length === 0) { errorMsg.innerText = "Please add at least one student with name and level."; return; }
-                    if (!document.getElementById('legal-agree').checked) { errorMsg.innerText = "Please agree to the terms and conditions."; return; }
+                    const sName = document.getElementById('student-name').value;
+                    const agreed = document.getElementById('legal-agree').checked;
+                    if (!pName || !sName || !agreed) { errorMsg.innerText = "Fill all fields and agree to terms."; return; }
                     const cred = await createUserWithEmailAndPassword(auth, email, pass);
-                    await setDoc(doc(db_fs, "users", cred.user.uid), {
-                        email, parentName: pName, students: students, studentName: students[0].name, level: students[0].level,
-                        loginDays: 1, lastLoginDate: new Date().toDateString(), agreedToTerms: true, createdAt: new Date()
-                    });
+                    await setDoc(doc(db_fs, "users", cred.user.uid), { email, parentName: pName, studentName: sName, loginDays: 1, lastLoginDate: new Date().toDateString(), agreedToTerms: true });
                 } else {
                     await signInWithEmailAndPassword(auth, email, pass);
                 }
-            } catch (e) {
-                console.error("Auth Error:", e);
-                if (e.code === 'auth/email-already-in-use') errorMsg.innerText = "This email is already registered. Please login instead.";
-                else if (e.code === 'auth/weak-password') errorMsg.innerText = "Password must be at least 6 characters.";
-                else if (e.code === 'auth/invalid-email') errorMsg.innerText = "Please enter a valid email address.";
-                else if (e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password') errorMsg.innerText = "Invalid email or password.";
-                else errorMsg.innerText = "Error: " + e.message;
-            }
-        };
-
-        window.handleForgotPassword = async () => {
-            const email = document.getElementById('auth-email').value;
-            const errorMsg = document.getElementById('auth-error');
-            if (!email) { errorMsg.innerText = "Please enter your email address first."; errorMsg.style.color = "#dc3545"; return; }
-            try {
-                await sendPasswordResetEmail(auth, email);
-                errorMsg.innerText = "Password reset email sent! Check your inbox.";
-                errorMsg.style.color = "#28a745";
-            } catch (e) { console.error("Reset Error:", e); errorMsg.innerText = "Error sending reset email: " + e.message; errorMsg.style.color = "#dc3545"; }
+            } catch (e) { errorMsg.innerText = e.message; }
         };
 
         window.handleGoogleLogin = async () => {
             try {
                 const result = await signInWithPopup(auth, googleProvider);
-                const userRef = doc(db_fs, "users", result.user.uid);
-                const userSnap = await getDoc(userRef);
-                if (!userSnap.exists() || !userSnap.data().students || userSnap.data().students.length === 0) {
-                    window.pendingGoogleUser = result.user;
-                    document.getElementById('auth-overlay').style.display = 'none';
-                    document.getElementById('google-setup-modal').classList.add('visible');
-                } else {
-                    await trackLoginDays(result.user);
-                }
+                await trackLoginDays(result.user);
             } catch (e) { document.getElementById('auth-error').innerText = "Google Error: " + e.message; }
-        };
-
-        window.addGoogleStudentEntry = function() {
-            const container = document.getElementById('google-students-container');
-            const entries = container.querySelectorAll('.google-student-entry');
-            const newIndex = entries.length;
-            const entryDiv = document.createElement('div');
-            entryDiv.className = 'google-student-entry';
-            entryDiv.dataset.studentIndex = newIndex;
-            entryDiv.innerHTML = `<div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                <input type="text" class="auth-input google-student-name" placeholder="Student's Name" style="flex: 1; margin-bottom: 0;">
-                <select class="auth-input google-student-level" style="width: 100px; margin-bottom: 0;">
-                    <option value="">Level</option><option value="P3">P3</option><option value="P4">P4</option><option value="P5">P5</option><option value="P6">P6</option>
-                </select>
-                <button type="button" onclick="this.parentElement.parentElement.remove()" style="background: #ffebee; border: none; border-radius: 8px; width: 40px; color: #f44336; font-size: 1.2rem; cursor: pointer;">×</button>
-            </div>`;
-            container.appendChild(entryDiv);
-        };
-
-        function getGoogleStudentsData() {
-            const students = [];
-            document.querySelectorAll('.google-student-entry').forEach(entry => {
-                const name = entry.querySelector('.google-student-name').value.trim();
-                const level = entry.querySelector('.google-student-level').value;
-                if (name && level) students.push({ name, level, rating: RATING_CONFIG.DEFAULT_STUDENT_RATING });
-            });
-            return students;
-        }
-
-        window.completeGoogleSetup = async function() {
-            const errorMsg = document.getElementById('google-setup-error');
-            errorMsg.style.color = "#dc3545";
-            const parentName = document.getElementById('google-parent-name').value.trim();
-            const students = getGoogleStudentsData();
-            if (!parentName) { errorMsg.innerText = "Please enter parent's name."; return; }
-            if (students.length === 0) { errorMsg.innerText = "Please add at least one student with name and level."; return; }
-            if (!document.getElementById('google-legal-agree').checked) { errorMsg.innerText = "Please agree to the terms and conditions."; return; }
-            try {
-                const user = window.pendingGoogleUser;
-                if (!user) { errorMsg.innerText = "Session expired. Please try again."; return; }
-                await setDoc(doc(db_fs, "users", user.uid), {
-                    email: user.email, parentName: parentName, students: students, studentName: students[0].name, level: students[0].level,
-                    loginDays: 1, lastLoginDate: new Date().toDateString(), agreedToTerms: true, createdAt: new Date(), authProvider: 'google'
-                });
-                document.getElementById('google-setup-modal').classList.remove('visible');
-                window.pendingGoogleUser = null;
-                window.location.reload();
-            } catch (e) { console.error("Setup Error:", e); errorMsg.innerText = "Error saving details: " + e.message; }
         };
 
         window.handleLogout = () => signOut(auth).then(() => location.reload());
 
+        window.handleResetPassword = () => {
+            const email = document.getElementById('auth-email').value;
+            if (!email) { alert("Enter email first."); return; }
+            sendPasswordResetEmail(auth, email).then(() => alert("Reset link sent!"));
+        };
+
         onAuthStateChanged(auth, (user) => {
             const overlay = document.getElementById('auth-overlay');
-            if (user) { overlay.style.display = 'none'; trackLoginDays(user); window.loadQuestionRatings(); }
+            if (user) { overlay.style.display = 'none'; trackLoginDays(user); }
             else { overlay.style.display = 'flex'; }
         });
     </script>
