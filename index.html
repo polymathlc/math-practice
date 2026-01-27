@@ -1192,12 +1192,18 @@
 
 
         .answer-key-section {
-            margin-top: 10px;
+            margin-top: 15px;
             font-weight: bold;
-            color: var(--highlight);
+            color: var(--success);
             display: none;
-            border-top: 1px dashed #ccc;
-            padding-top: 5px;
+            border-top: 2px solid var(--success);
+            padding: 15px;
+            background: rgba(0, 184, 148, 0.1);
+            border-radius: 8px;
+        }
+        
+        .answer-key-section.show {
+            display: block !important;
         }
 
         @media print {
@@ -17402,6 +17408,9 @@
                 const answerSection = qBlock.querySelector('.answer-key-section');
                 if (answerSection) {
                     answerSection.style.display = 'block';
+                    answerSection.classList.add('show');
+                    // Scroll to show the answer
+                    setTimeout(() => answerSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
                 }
             }
             
@@ -17466,6 +17475,8 @@
             const answerSection = qBlock.querySelector('.answer-key-section');
             if (answerSection) {
                 answerSection.style.display = 'block';
+                answerSection.classList.add('show');
+                setTimeout(() => answerSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
             }
 
             playSound(isCorrect ? 'correct' : 'wrong');
@@ -17537,6 +17548,7 @@
                 const answerSection = block.querySelector('.answer-key-section');
                 if (answerSection) {
                     answerSection.style.display = 'block';
+                    answerSection.classList.add('show');
                 }
                 
                 if (isCorrect) correct++;
