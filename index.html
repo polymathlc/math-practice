@@ -964,24 +964,108 @@
         }
 
         .mcq-container {
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        .mcq-option {
+            margin-top: 15px;
+            margin-bottom: 15px;
             display: flex;
-            align-items: baseline;
-            margin-bottom: 8px;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mcq-btn {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--paper);
+            border: 2px solid #ddd;
+            border-radius: 10px;
             cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.05rem;
+            text-align: left;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        .mcq-option input[type="radio"] {
-            margin-right: 10px;
-            transform: scale(1.2);
+        .mcq-btn:hover {
+            border-color: var(--accent);
+            background: rgba(9, 132, 227, 0.05);
+            transform: translateX(5px);
         }
 
-        .mcq-label {
-            font-size: 1.1rem;
+        .mcq-btn.selected {
+            border-color: var(--accent);
+            background: rgba(9, 132, 227, 0.1);
+            box-shadow: 0 0 0 3px rgba(9, 132, 227, 0.2);
+        }
+
+        .mcq-btn.correct {
+            border-color: var(--success);
+            background: rgba(0, 184, 148, 0.15);
+            box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.2);
+        }
+
+        .mcq-btn.wrong {
+            border-color: var(--error);
+            background: rgba(214, 48, 49, 0.1);
+            opacity: 0.7;
+        }
+
+        .mcq-btn.correct::after {
+            content: '✓';
+            margin-left: auto;
+            font-size: 1.3rem;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .mcq-btn.wrong.selected::after {
+            content: '✗';
+            margin-left: auto;
+            font-size: 1.3rem;
+            color: var(--error);
+            font-weight: bold;
+        }
+
+        .mcq-btn .option-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: #eee;
+            border-radius: 50%;
+            margin-right: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .mcq-btn.selected .option-num {
+            background: var(--accent);
+            color: white;
+        }
+
+        .mcq-btn.correct .option-num {
+            background: var(--success);
+            color: white;
+        }
+
+        .mcq-btn.wrong .option-num {
+            background: var(--error);
+            color: white;
+        }
+
+        .mcq-btn .option-text {
+            flex: 1;
+        }
+
+        .mcq-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        /* Legacy support for radio buttons (print mode) */
+        .mcq-option {
+            display: none;
         }
 
         .mcq-print-bracket {
@@ -992,6 +1076,7 @@
             margin-top: -30px;
         }
 
+        /* Keep old classes for backwards compatibility */
         .mcq-option.correct-choice .mcq-label {
             color: var(--success);
             font-weight: bold;
@@ -17104,12 +17189,14 @@
 
                     let inputHTML = '';
                     if (isMCQ) {
-                        inputHTML = '<div class="mcq-container">';
+                        inputHTML = `<div class="mcq-container" data-correct="${item.a}" data-qindex="${index}">`;
                         mcqData.options.forEach((opt, i) => {
-                            inputHTML += `<label class="mcq-option"><input type="radio" name="${qId}" value="${i + 1}" data-correct="${item.a}"><span class="mcq-label">(${i + 1}) ${formatText(opt)}</span></label>`;
+                            inputHTML += `<button type="button" class="mcq-btn" data-value="${i + 1}" onclick="selectMCQOption(this, ${index})">
+                                <span class="option-num">${i + 1}</span>
+                                <span class="option-text">${formatText(opt)}</span>
+                            </button>`;
                         });
                         inputHTML += '</div>';
-                        inputHTML += `<button onclick="checkSingleAnswer(${index})" style="font-size:0.8rem; padding:4px 8px; background:var(--highlight); color:white; border:none; border-radius:4px; cursor:pointer;">Check</button>`;
                         inputHTML += `<span class="feedback-tick" id="tick-${index}">✓</span>`;
                     } else {
                         const parts = parseMultipartAnswer(item.a, item.u);
@@ -17269,11 +17356,71 @@
         }
 
         // ============ ANSWER CHECKING ============
+        
+        // MCQ Button Selection - Auto-check on click
+        function selectMCQOption(btn, index) {
+            const container = btn.closest('.mcq-container');
+            if (!container) return;
+            
+            // Check if already answered (any button has correct/wrong class)
+            const alreadyAnswered = container.querySelector('.mcq-btn.correct, .mcq-btn.wrong');
+            if (alreadyAnswered) return; // Don't allow changing answer after checking
+            
+            // Remove selected from all buttons in this container
+            container.querySelectorAll('.mcq-btn').forEach(b => b.classList.remove('selected'));
+            
+            // Select this button
+            btn.classList.add('selected');
+            
+            // Auto-check the answer
+            const correctAns = container.dataset.correct;
+            const selectedValue = btn.dataset.value;
+            const isCorrect = selectedValue === correctAns;
+            
+            // Mark all buttons - correct answer gets 'correct' class, wrong selection gets 'wrong'
+            container.querySelectorAll('.mcq-btn').forEach(b => {
+                if (b.dataset.value === correctAns) {
+                    b.classList.add('correct');
+                } else if (b.classList.contains('selected')) {
+                    b.classList.add('wrong');
+                }
+                b.disabled = true; // Disable all buttons after answering
+            });
+            
+            // Show tick for correct answer
+            const tick = document.getElementById(`tick-${index}`);
+            if (tick) {
+                if (isCorrect) tick.classList.add('show');
+                else tick.classList.remove('show');
+            }
+            
+            // Play sound
+            playSound(isCorrect ? 'correct' : 'wrong');
+            
+            // Update stats
+            const qObj = currentPaperQuestions[index];
+            if (qObj) updateGlobalStats(qObj.top, isCorrect, 0);
+            
+            // Handle adaptive mode
+            if (isAdaptiveMode) {
+                if (isCorrect) {
+                    showToast("Correct! Next challenge coming...");
+                    handleVaultSuccess(qObj);
+                } else {
+                    showToast("Incorrect! Added to Vault. Moving on...");
+                    addToVault(qObj);
+                }
+                setTimeout(() => nextAdaptiveQuestion(), 1500);
+            } else {
+                if (!isCorrect && qObj) addToVault(qObj);
+            }
+        }
+        
         function checkSingleAnswer(index) {
             const qBlock = document.getElementById(`qblock-${index}`);
             if (!qBlock) return;
             const input = qBlock.querySelector('.student-input');
-            const radios = qBlock.querySelectorAll('input[type="radio"]');
+            const mcqContainer = qBlock.querySelector('.mcq-container');
             let isCorrect = false;
 
             if (input) {
@@ -17288,11 +17435,14 @@
                     if (!isPartCorrect) allCorrect = false;
                 });
                 isCorrect = allCorrect;
-            } else if (radios.length > 0) {
-                let selected = Array.from(radios).find(r => r.checked);
+            } else if (mcqContainer) {
+                // For MCQ with buttons - check if already answered
+                const selected = mcqContainer.querySelector('.mcq-btn.selected');
                 if (!selected) { alert("Select an option first."); return; }
-                isCorrect = selected.value === selected.dataset.correct;
-                selected.parentElement.classList.add(isCorrect ? 'correct-choice' : 'wrong-choice');
+                const correctAns = mcqContainer.dataset.correct;
+                isCorrect = selected.dataset.value === correctAns;
+                // Already handled by selectMCQOption, just return
+                return;
             }
 
             const tick = document.getElementById(`tick-${index}`);
@@ -17326,8 +17476,9 @@
                 const block = document.getElementById(`qblock-${idx}`);
                 if (!block) return;
                 const inputs = block.querySelectorAll('.student-input');
-                const radio = block.querySelector('input[type="radio"]:checked');
+                const mcqContainer = block.querySelector('.mcq-container');
                 let isCorrect = false;
+                
                 if (inputs.length > 0) {
                     let allCorrect = true;
                     inputs.forEach(inp => {
@@ -17340,10 +17491,25 @@
                     });
                     isCorrect = allCorrect;
                 }
-                if (radio) {
-                    isCorrect = radio.value === radio.dataset.correct;
-                    radio.parentElement.classList.add(isCorrect ? 'correct-choice' : 'wrong-choice');
+                
+                if (mcqContainer) {
+                    const selected = mcqContainer.querySelector('.mcq-btn.selected');
+                    const correctAns = mcqContainer.dataset.correct;
+                    if (selected) {
+                        isCorrect = selected.dataset.value === correctAns;
+                        // Mark correct/wrong if not already marked
+                        if (!mcqContainer.querySelector('.mcq-btn.correct')) {
+                            mcqContainer.querySelectorAll('.mcq-btn').forEach(b => {
+                                if (b.dataset.value === correctAns) {
+                                    b.classList.add('correct');
+                                } else if (b.classList.contains('selected')) {
+                                    b.classList.add('wrong');
+                                }
+                            });
+                        }
+                    }
                 }
+                
                 const tick = document.getElementById(`tick-${idx}`);
                 if (tick) {
                     if (isCorrect) tick.classList.add('show');
