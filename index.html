@@ -856,6 +856,47 @@
             animation: popIn 0.5s;
         }
 
+        .adaptive-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            padding: 20px;
+        }
+
+        .adaptive-nav-btn {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .adaptive-nav-btn.prev {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .adaptive-nav-btn.prev:hover:not(:disabled) {
+            background: #d0d0d0;
+        }
+
+        .adaptive-nav-btn.next {
+            background: var(--accent);
+            color: white;
+        }
+
+        .adaptive-nav-btn.next:hover {
+            background: #5a4fcf;
+        }
+
+        .adaptive-nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .q-actions {
             display: none;
             position: absolute;
@@ -17419,13 +17460,13 @@
             // Handle adaptive mode
             if (isAdaptiveMode) {
                 if (isCorrect) {
-                    showToast("Correct! Next challenge coming...");
+                    showToast("Correct! Click Next when ready.");
                     handleVaultSuccess(qObj);
                 } else {
-                    showToast("Incorrect! Added to Vault. Moving on...");
+                    showToast("Incorrect! Added to Vault. Review the explanation, then click Next.");
                     addToVault(qObj);
                 }
-                setTimeout(() => nextAdaptiveQuestion(), 1500);
+                // Don't auto-advance - let student click Next when ready
             } else {
                 if (!isCorrect && qObj) addToVault(qObj);
             }
@@ -17480,14 +17521,13 @@
 
             if (isAdaptiveMode) {
                 if (isCorrect) {
-                    showToast("Correct! Next challenge coming...");
+                    showToast("Correct! Click Next when ready.");
                     handleVaultSuccess(qObj);
                 } else {
-                    showToast("Incorrect! Added to Vault. Moving on...");
+                    showToast("Incorrect! Added to Vault. Review the explanation, then click Next.");
                     addToVault(qObj);
                 }
-                // Always proceed to next question in adaptive mode
-                setTimeout(() => nextAdaptiveQuestion(), 1500);
+                // Don't auto-advance - let student click Next when ready
             } else {
                 if (!isCorrect && qObj) addToVault(qObj);
             }
@@ -17786,6 +17826,9 @@
         }
 
         // ============ ADAPTIVE LEARNING ============
+        let adaptiveHistory = []; // Track visited questions for back navigation
+        let adaptiveCurrentIndex = -1; // Current position in history
+
         function startAdaptiveMode() {
             isAdaptiveMode = true;
             document.body.classList.add('adaptive-mode');
@@ -17793,6 +17836,8 @@
             const sortedDb = [...db].sort((a, b) => (a.diffScore || 50) - (b.diffScore || 50));
             adaptiveQueue = sortedDb;
             adaptiveIndex = 0;
+            adaptiveHistory = [];
+            adaptiveCurrentIndex = -1;
             showToast("Adaptive Mode Started! 🚀");
             nextAdaptiveQuestion();
         }
@@ -17821,6 +17866,14 @@
         }
 
         function nextAdaptiveQuestion() {
+            // If we're not at the end of history, just move forward in history
+            if (adaptiveCurrentIndex < adaptiveHistory.length - 1) {
+                adaptiveCurrentIndex++;
+                const historyItem = adaptiveHistory[adaptiveCurrentIndex];
+                renderAdaptiveQuestion(historyItem.q, historyItem.isVault, false);
+                return;
+            }
+
             const twoDays = 2 * 24 * 60 * 60 * 1000;
             const now = Date.now();
             const vaultCandidate = mistakeVault.find(v => (now - v.lastAttempt) > twoDays);
@@ -17829,7 +17882,9 @@
                 let q = vaultCandidate.qRef;
                 if (!q) q = db.find(x => x.id === vaultCandidate.id);
                 if (q) {
-                    renderAdaptiveQuestion(q, true);
+                    adaptiveHistory.push({ q, isVault: true });
+                    adaptiveCurrentIndex = adaptiveHistory.length - 1;
+                    renderAdaptiveQuestion(q, true, true);
                     return;
                 }
             }
@@ -17844,10 +17899,20 @@
 
             const q = adaptiveQueue[adaptiveIndex];
             adaptiveIndex++;
-            renderAdaptiveQuestion(q, false);
+            adaptiveHistory.push({ q, isVault: false });
+            adaptiveCurrentIndex = adaptiveHistory.length - 1;
+            renderAdaptiveQuestion(q, false, true);
         }
 
-        function renderAdaptiveQuestion(q, isVault) {
+        function prevAdaptiveQuestion() {
+            if (adaptiveCurrentIndex > 0) {
+                adaptiveCurrentIndex--;
+                const historyItem = adaptiveHistory[adaptiveCurrentIndex];
+                renderAdaptiveQuestion(historyItem.q, historyItem.isVault, false);
+            }
+        }
+
+        function renderAdaptiveQuestion(q, isVault, isNewQuestion = true) {
             currentPaperQuestions = [q];
             renderPaper();
             const sheet = document.querySelector('.sheet');
@@ -17855,10 +17920,28 @@
                 const diff = q.diffScore || calculateDifficulty(q);
                 const header = sheet.querySelector('.school-header');
                 if (header) {
-                    header.innerHTML = `Adaptive Challenge ${isVault ? '↺ Review' : ''}<br><span style="font-size:0.8rem; color:#6c5ce7;">Difficulty Level: ${diff}/100</span>`;
+                    const questionNum = adaptiveCurrentIndex + 1;
+                    const totalAnswered = adaptiveHistory.length;
+                    header.innerHTML = `Adaptive Challenge ${isVault ? '↺ Review' : ''} (${questionNum}/${totalAnswered})<br><span style="font-size:0.8rem; color:#6c5ce7;">Difficulty Level: ${diff}/100</span>`;
                 }
                 const nameInput = sheet.querySelector('.student-name-input');
                 if (nameInput) nameInput.style.display = 'none';
+
+                // Add navigation buttons
+                let navContainer = sheet.querySelector('.adaptive-nav');
+                if (!navContainer) {
+                    navContainer = document.createElement('div');
+                    navContainer.className = 'adaptive-nav';
+                    sheet.appendChild(navContainer);
+                }
+                navContainer.innerHTML = `
+                    <button class="adaptive-nav-btn prev" onclick="prevAdaptiveQuestion()" ${adaptiveCurrentIndex <= 0 ? 'disabled' : ''}>
+                        ← Previous
+                    </button>
+                    <button class="adaptive-nav-btn next" onclick="nextAdaptiveQuestion()">
+                        Next →
+                    </button>
+                `;
             }
         }
 
