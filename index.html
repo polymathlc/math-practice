@@ -17249,6 +17249,17 @@
                                     <div class="q-number-col">${index + 1}.</div>
                                     <div class="q-content-col">${qMainContent}${inputHTML}</div>
                                 </div>
+                                <div class="answer-key-section" style="display:${showAnswers ? 'block' : 'none'}">
+                                    <strong>Answer:</strong> ${formattedA}
+                                    ${item.exp ? `<div class="explanation-box"><strong>Explanation:</strong> ${formatText(item.exp)}</div>` : ''}
+                                    ${item.vid ? `
+                                        <div class="video-explanation" style="margin-top:15px;">
+                                            <video controls style="width:100%; max-width:600px; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.15); border:1px solid #eee;">
+                                                <source src="${item.vid.replace(/dl=0|dl=1/g, 'raw=1')}" type="video/mp4">
+                                            </video>
+                                        </div>
+                                    ` : ''}
+                                </div>
                                 <div class="working-space-container">
                                     <div class="canvas-toolbar">
                                         <button class="tool-btn active" onclick="setTool(this, 'pen', ${index})">✏️</button>
@@ -17257,22 +17268,6 @@
                                         <button class="tool-btn" onclick="clearCanvas(${index})" style="margin-left:auto; color:red;">Clear</button>
                                     </div>
                                     <canvas id="canvas-${index}" class="working-canvas" width="700" height="200"></canvas>
-                                </div>
-                                <div class="answer-key-section" style="display:${showAnswers ? 'block' : 'none'}">
-                                    Ans: ${formattedA}
-                                    ${item.exp ? `<div class="explanation-box">${formatText(item.exp)}</div>` : ''}
-                                    ${item.vid ? `
-                                        <div class="video-explanation" style="margin-top:15px;">
-                                            <video controls style="width:100%; max-width:600px; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.15); border:1px solid #eee;">
-                                                <source src="${item.vid.replace(/dl=0|dl=1/g, 'raw=1')}" type="video/mp4">
-                                                Your browser does not support the video tag.
-                                            </video>
-                                        </div>
-                                        <div class="qr-code">
-                                            <p style="font-size:0.8rem; margin:10px 0 5px 0; font-weight:bold;">Scan to watch explanation video:</p>
-                                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(item.vid.replace(/raw=1|dl=1/g, 'dl=0'))}" alt="QR Code" style="width:100px; height:100px; border:1px solid #eee; padding:5px; background:white;">
-                                        </div>
-                                    ` : ''}
                                 </div>
                             </div>
                         </div>`;
