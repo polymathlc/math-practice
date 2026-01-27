@@ -17396,6 +17396,15 @@
                 else tick.classList.remove('show');
             }
             
+            // Show answer key and explanation
+            const qBlock = document.getElementById(`qblock-${index}`);
+            if (qBlock) {
+                const answerSection = qBlock.querySelector('.answer-key-section');
+                if (answerSection) {
+                    answerSection.style.display = 'block';
+                }
+            }
+            
             // Play sound
             playSound(isCorrect ? 'correct' : 'wrong');
             
@@ -17451,6 +17460,12 @@
             if (tick) {
                 if (isCorrect) tick.classList.add('show');
                 else tick.classList.remove('show');
+            }
+
+            // Show answer key and explanation
+            const answerSection = qBlock.querySelector('.answer-key-section');
+            if (answerSection) {
+                answerSection.style.display = 'block';
             }
 
             playSound(isCorrect ? 'correct' : 'wrong');
@@ -17517,6 +17532,13 @@
                     if (isCorrect) tick.classList.add('show');
                     else tick.classList.remove('show');
                 }
+                
+                // Show answer key and explanation for all questions
+                const answerSection = block.querySelector('.answer-key-section');
+                if (answerSection) {
+                    answerSection.style.display = 'block';
+                }
+                
                 if (isCorrect) correct++;
                 else addToVault(q);
             });
