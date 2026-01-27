@@ -2126,6 +2126,7 @@
                     class="count-badge">0</span></button>
 
             <button onclick="window.print()" style="background:#7f8c8d;">Print PDF</button>
+            <button onclick="clearAllQuestions()" style="background:#c0392b;">Clear All</button>
             <button onclick="toggleAdmin()" style="background:#8e44ad;">Admin</button>
         </div>
         <div style="margin-top:10px;">
@@ -17391,6 +17392,18 @@
         }
 
         function removeFromPaper(index) { currentPaperQuestions.splice(index, 1); renderPaper(); }
+
+        function clearAllQuestions() {
+            if (currentPaperQuestions.length === 0) {
+                showToast("Worksheet is already empty");
+                return;
+            }
+            if (confirm(`Clear all ${currentPaperQuestions.length} questions from the worksheet?`)) {
+                currentPaperQuestions = [];
+                renderPaper();
+                showToast("Worksheet cleared");
+            }
+        }
 
         function insertQuestionAt(index) {
             const pool = db.filter(q => !currentPaperQuestions.includes(q));
