@@ -3694,9 +3694,13 @@
             // Global symbol replacements
             f = f.replace(/\*/g, '×');
 
+            // Convert simple fractions (e.g., 3/8) to HTML fractions before division replacement
+            // Match number/number patterns that look like fractions (single or double digit numerator/denominator)
+            f = f.replace(/(\d{1,2})\/(\d{1,2})(?![0-9])/g, '<span class="fraction"><span class="numerator">$1</span><span class="denominator">$2</span></span>');
+            
             // Context-aware division replacement (/ -> ÷)
-            // Replaces / when surrounded by numbers, variables or spaces, but avoids breaking URLs or fractions
-            f = f.replace(/(\d|[a-zA-Z])\s*\/\s*(\d|[a-zA-Z])/g, '$1 ÷ $2');
+            // Now only applies to patterns not already converted to fractions (e.g., variables, larger numbers)
+            f = f.replace(/(\d{3,}|[a-zA-Z])\s*\/\s*(\d+|[a-zA-Z])/g, '$1 ÷ $2');
 
             // Stylistic refinements
             f = f.replace(/\?/g, '<span class="question-mark">?</span>');
