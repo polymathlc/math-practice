@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>SG Math Exam Bank (Pro Layout)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Roboto:wght@400;700&display=swap');
@@ -154,10 +154,11 @@
         .checkbox-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             font-size: 0.9rem;
             cursor: pointer;
             transition: color 0.2s;
+            padding: 4px 0;
         }
 
         .checkbox-item:hover {
@@ -165,8 +166,10 @@
         }
 
         .checkbox-item input {
-            width: auto;
+            width: 18px;
+            height: 18px;
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         .gen-footer {
@@ -175,6 +178,22 @@
             gap: 15px;
             padding-top: 20px;
             border-top: 1px solid #eee;
+        }
+
+        .gen-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .gen-toggles-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .count-input-wrapper {
@@ -435,6 +454,24 @@
             padding-left: 320px;
             min-height: 100vh;
             transition: background 0.3s ease, color 0.3s ease;
+            -webkit-overflow-scrolling: touch;
+            overflow-x: hidden;
+        }
+
+        /* Global touch improvements */
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* Prevent pull-to-refresh on mobile when scrolling modals */
+        .focus-overlay {
+            overscroll-behavior: contain;
         }
 
         @media print {
@@ -536,6 +573,14 @@
             margin: 15px 0;
             border: 1px solid #ddd;
             border-radius: 4px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* Global image & video responsive */
+        img, video, iframe {
+            max-width: 100%;
+            height: auto;
         }
 
         .app-sidebar {
@@ -604,20 +649,538 @@
         }
 
         @media screen and (max-width: 768px) {
+            /* Body & Layout */
+            body {
+                padding: 15px;
+                padding-left: 15px !important;
+                padding-top: 70px;
+                padding-bottom: 100px;
+            }
+
+            /* Sidebar */
             .app-sidebar {
                 transform: translateX(-100%);
+                width: 85%;
+                max-width: 320px;
+                height: 100vh;
+                height: 100dvh; /* Dynamic viewport height for mobile browsers */
+                padding-bottom: 100px; /* Extra space at bottom for logout button */
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
             }
             .app-sidebar.open {
                 transform: translateX(0);
             }
             .sidebar-close {
                 display: block;
+                position: sticky;
+                top: 0;
+                align-self: flex-end;
+                margin-bottom: 10px;
+                z-index: 10;
             }
             .hamburger-btn {
                 display: block;
             }
             .sidebar-overlay.open {
                 display: block;
+            }
+
+            /* Paper Container */
+            #paper-container {
+                width: 100%;
+                margin: 0;
+            }
+
+            .sheet {
+                width: 100%;
+                min-height: auto;
+                padding: 15px;
+                margin-bottom: 15px;
+                border-radius: 12px;
+            }
+
+            /* Question Blocks */
+            .question-block {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .q-layout {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .q-number-col {
+                text-align: left;
+                font-size: 1rem;
+                color: var(--accent);
+                border-bottom: 1px solid #eee;
+                padding-bottom: 5px;
+            }
+
+            .q-content-col {
+                font-size: 1rem;
+                line-height: 1.5;
+                text-align: left;
+            }
+
+            .q-meta {
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .q-meta .tag {
+                font-size: 0.65rem;
+                padding: 2px 5px;
+            }
+
+            /* Action Buttons - Always visible on mobile */
+            .q-actions {
+                display: flex !important;
+                position: relative;
+                top: 0;
+                right: 0;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-bottom: 10px;
+                justify-content: flex-end;
+            }
+
+            .action-btn {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+                min-width: 44px;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Images */
+            .q-image {
+                max-width: 100%;
+                height: auto;
+                max-height: 250px;
+                object-fit: contain;
+            }
+
+            /* MCQ Buttons */
+            .mcq-container {
+                gap: 12px;
+            }
+
+            .mcq-btn {
+                padding: 14px 16px;
+                font-size: 1rem;
+                min-height: 50px;
+            }
+
+            .mcq-btn .option-num {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+
+            /* Input Fields */
+            .student-input {
+                width: 100%;
+                font-size: 16px; /* Prevents zoom on iOS */
+                padding: 12px;
+                min-height: 44px;
+            }
+
+            .interaction-area {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .interaction-area button {
+                width: 100%;
+                min-height: 44px;
+            }
+
+            /* Canvas/Working Space */
+            .working-space-container {
+                margin-top: 10px;
+            }
+
+            .canvas-toolbar {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 10px;
+            }
+
+            .tool-btn {
+                min-width: 44px;
+                min-height: 44px;
+                font-size: 1.3rem;
+                padding: 8px;
+            }
+
+            .working-canvas {
+                height: 200px;
+            }
+
+            /* Modals */
+            .focus-overlay {
+                padding: 10px;
+                align-items: flex-start !important;
+                padding-top: 20px !important;
+            }
+
+            .focus-card {
+                width: 100% !important;
+                max-width: 100% !important;
+                max-height: 90vh;
+                padding: 20px;
+                border-radius: 16px;
+                margin: 0;
+            }
+
+            .focus-close {
+                font-size: 1.8rem;
+                top: 10px;
+                right: 15px;
+                padding: 5px;
+            }
+
+            /* Search Modal */
+            #searchModal .focus-card {
+                height: auto;
+                max-height: 95vh;
+            }
+
+            .search-input-wrapper {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-input-wrapper input[type="text"] {
+                font-size: 16px;
+                padding: 14px;
+            }
+
+            .search-filters {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-filters select {
+                width: 100%;
+                padding: 12px;
+                font-size: 16px;
+            }
+
+            .search-result-item {
+                padding: 15px;
+            }
+
+            .add-to-paper-btn {
+                width: 100%;
+                padding: 12px;
+                margin-top: 10px;
+            }
+
+            /* Browse Modal */
+            #browseModal .focus-card {
+                height: auto;
+                max-height: 95vh;
+            }
+
+            .browse-item {
+                padding: 12px;
+            }
+
+            .browse-item-q {
+                font-size: 0.9rem;
+            }
+
+            /* Generation Modal */
+            .gen-modal-content {
+                gap: 15px;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .filter-section {
+                padding: 12px;
+            }
+
+            .checkbox-list {
+                max-height: 120px;
+            }
+
+            .checkbox-item {
+                padding: 8px 0;
+                font-size: 1rem;
+            }
+
+            .checkbox-item input[type="checkbox"] {
+                width: 20px;
+                height: 20px;
+            }
+
+            .count-input-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .count-input-wrapper input {
+                width: 100%;
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            .gen-footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .gen-footer button {
+                width: 100%;
+                padding: 14px;
+            }
+
+            .mistake-toggle {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+
+            .filter-mode-toggle {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .gen-header-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .gen-toggles-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .gen-toggles-row .mistake-toggle {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Edit Modal */
+            #editModal .focus-card {
+                max-height: 95vh;
+                overflow-y: auto;
+            }
+
+            #editModal .control-group input,
+            #editModal .control-group select,
+            #editModal .control-group textarea {
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            /* Preview Modal */
+            #previewModalContainer {
+                padding: 20px;
+                max-height: 95vh;
+            }
+
+            #prevAddBtn, #prevEditBtn {
+                width: 100%;
+                padding: 14px 20px;
+            }
+
+            /* Result Modal */
+            .result-card {
+                width: 95%;
+                padding: 25px 20px;
+            }
+
+            .score-circle {
+                width: 100px;
+                height: 100px;
+                font-size: 2rem;
+            }
+
+            .score-circle::before {
+                width: 75px;
+                height: 75px;
+            }
+
+            .result-stats {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            /* Admin Panel */
+            .admin-panel {
+                padding: 15px;
+                margin: 20px 10px;
+            }
+
+            .admin-panel > div {
+                flex-direction: column;
+            }
+
+            .admin-panel textarea {
+                height: 80px;
+            }
+
+            .admin-panel input {
+                font-size: 16px;
+            }
+
+            /* Sidebar buttons */
+            .app-sidebar button {
+                min-height: 44px;
+                font-size: 0.9rem;
+            }
+
+            /* Explanation Box */
+            .explanation-box {
+                font-size: 0.9rem;
+                padding: 12px;
+            }
+
+            /* Video */
+            .video-explanation video {
+                max-width: 100%;
+                border-radius: 8px;
+            }
+
+            /* Streak Counter */
+            .streak-container {
+                bottom: 15px;
+                left: 15px;
+                font-size: 1rem;
+                padding: 8px 15px;
+            }
+
+            /* Toast */
+            .toast {
+                bottom: 20px;
+                left: 50%;
+                max-width: 90%;
+                font-size: 0.9rem;
+            }
+
+            /* Auth Overlay */
+            #auth-overlay > div {
+                width: 95%;
+                padding: 20px;
+                margin: 10px;
+            }
+
+            #auth-overlay input {
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            /* Agreement Overlay */
+            #agreement-overlay > div {
+                width: 95%;
+                padding: 25px;
+                margin: 10px;
+            }
+
+            /* Stats Modal */
+            #stats-modal .focus-card {
+                max-width: 100%;
+            }
+
+            .stats-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 5px;
+            }
+
+            .stats-label {
+                width: 100%;
+                text-align: left;
+            }
+
+            /* Notes Modal */
+            #notesModal .focus-card {
+                height: auto;
+                max-height: 95vh;
+            }
+
+            /* Adaptive Mode */
+            .adaptive-nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .adaptive-nav-btn {
+                width: 100%;
+                padding: 14px;
+            }
+
+            /* Database Count */
+            .db-count-display {
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+
+            /* Cover Page */
+            .cover-page {
+                padding: 20px;
+            }
+
+            .cover-table th,
+            .cover-table td {
+                padding: 8px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Extra small screens */
+        @media screen and (max-width: 400px) {
+            body {
+                padding: 10px;
+                padding-top: 65px;
+            }
+
+            .app-sidebar {
+                width: 90%;
+                padding: 15px;
+                padding-bottom: 120px;
+            }
+
+            .hamburger-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 1.3rem;
+                top: 10px;
+                left: 10px;
+            }
+
+            .question-block {
+                padding: 12px;
+            }
+
+            .q-content-col {
+                font-size: 0.95rem;
+            }
+
+            .mcq-btn {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+
+            .focus-card {
+                padding: 15px;
+            }
+
+            .focus-card h2 {
+                font-size: 1.3rem;
             }
         }
 
@@ -1330,9 +1893,10 @@
             }
         }
 
-        @media screen and (max-width: 1024px) {
+        @media screen and (max-width: 1024px) and (min-width: 769px) {
             body {
-                padding: 10px;
+                padding: 20px;
+                padding-left: 20px;
                 padding-bottom: 100px;
             }
 
@@ -1355,26 +1919,8 @@
             .sheet {
                 width: 100%;
                 min-height: auto;
-                padding: 15px;
+                padding: 20px;
                 box-sizing: border-box;
-            }
-
-            .q-layout {
-                flex-direction: column;
-                gap: 5px;
-            }
-
-            .q-number-col {
-                text-align: left;
-                width: 100%;
-                border-bottom: 1px solid #eee;
-                padding-bottom: 2px;
-                margin-bottom: 5px;
-                color: var(--highlight);
-            }
-
-            .q-content-col {
-                text-align: left;
             }
 
             .canvas-toolbar {
@@ -1405,6 +1951,15 @@
             .mcq-label {
                 font-size: 1.2rem;
                 padding: 5px 0;
+            }
+
+            /* Modals for tablet */
+            .focus-card {
+                max-width: 90%;
+            }
+
+            .filter-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -2115,6 +2670,7 @@
             <label>Search</label>
             <button onclick="openSearchModal()" style="background:var(--admin); flex:1;">🔍 Search</button>
             <button onclick="openBrowseModal()" style="background:var(--accent); flex:1;">📂 Browse All</button>
+            <button onclick="openNotesModal()" style="background:#27ae60; flex:1; margin-top:5px;">📝 Notes</button>
         </div>
         <div class="control-group" style="max-width: 100px;">
             <label>Settings</label>
@@ -2159,7 +2715,7 @@
             </p>
         </div>
         <button onclick="handleLogout()"
-            style="background:#d63031; width:100%; padding: 10px; border-radius: 8px; color: white; cursor: pointer; font-weight: 600;">🚪
+            style="background:#d63031; width:100%; padding: 10px; border-radius: 8px; color: white; cursor: pointer; font-weight: 600; margin-bottom: 30px;">🚪
             Logout</button>
     </aside>
 
@@ -2298,14 +2854,13 @@
             <h2 style="margin:0 0 20px 0;">🎉 Generate New Practice</h2>
 
             <div class="gen-modal-content">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <div style="display: flex; gap: 20px; align-items: center;">
+                <div class="gen-header-row">
+                    <div class="gen-toggles-row">
                         <label class="mistake-toggle">
                             <input type="checkbox" id="genIncludeMistakes">
                             <span>Include <strong>Mistake Vault</strong> 🚩</span>
                         </label>
-                        <label class="mistake-toggle"
-                            style="background: rgba(116, 185, 255, 0.1); border-color: rgba(116, 185, 255, 0.3);">
+                        <label class="mistake-toggle" style="background: rgba(116, 185, 255, 0.1); border-color: rgba(116, 185, 255, 0.3);">
                             <input type="checkbox" id="genVideoOnly">
                             <span style="color: var(--secondary);">Include <strong>Videos Only</strong> 🎬</span>
                         </label>
@@ -2631,7 +3186,7 @@
                 div.className = 'browse-item';
                 div.style.cursor = 'pointer';
                 div.onclick = (e) => {
-                    // Don't trigger if clicking the Add button
+                    // Don't trigger if clicking a button
                     if (e.target.tagName !== 'BUTTON') {
                         showQuestionPreview(item.id);
                     }
@@ -2642,8 +3197,9 @@
                         <span style="background:${getDiffColor(item.dif)}; color:white; padding:2px 6px; border-radius:4px; font-size:0.75rem;">${item.dif}</span>
                     </div>
                     <div class="browse-item-q">${stripHTML(formatText(item.q)).substring(0, 150)}${item.q.length > 150 ? '...' : ''}</div>
-                    <div class="browse-item-footer">
+                    <div class="browse-item-footer" style="display:flex; gap:8px; justify-content:flex-end;">
                         <button onclick="addFromBrowse('${item.id}', this)" class="add-to-paper-btn" style="padding: 6px 12px; font-size: 0.8rem; flex-shrink:0;">Add to Worksheet</button>
+                        <button onclick="deleteFromBrowse('${item.id}', this)" class="add-to-paper-btn" style="padding: 6px 12px; font-size: 0.8rem; flex-shrink:0; background:#e74c3c; border-color:#e74c3c;">🗑️ Delete</button>
                     </div>
                 `;
                 listEl.appendChild(div);
@@ -2727,6 +3283,41 @@
             btn.classList.add('added');
             btn.disabled = true;
             btn.style.width = btn.offsetWidth + 'px'; // Lock width to prevent shifting
+        }
+
+        function deleteFromBrowse(qId, btn) {
+            if (!confirm("Delete this question from the database?")) return;
+            
+            const dbIndex = db.findIndex(x => x.id === qId);
+            if (dbIndex === -1) {
+                showToast("Question not found");
+                return;
+            }
+
+            // Remove from database
+            db.splice(dbIndex, 1);
+
+            // Remove from paper if present
+            currentPaperQuestions = currentPaperQuestions.filter(q => q.id !== qId);
+            renderPaper();
+
+            // Remove the item from browse list visually
+            const browseItem = btn.closest('.browse-item');
+            if (browseItem) {
+                browseItem.style.transition = 'opacity 0.3s, transform 0.3s';
+                browseItem.style.opacity = '0';
+                browseItem.style.transform = 'translateX(20px)';
+                setTimeout(() => browseItem.remove(), 300);
+            }
+
+            // Also remove from browseQList to prevent it showing on scroll
+            browseQList = browseQList.filter(q => q.id !== qId);
+
+            // Update counts
+            addedQuestionIds = new Set();
+            updateDbCount();
+            updateDropdowns();
+            showToast("Question deleted 🗑️");
         }
 
         function openSearchModal() {
@@ -2911,6 +3502,28 @@
             updateDropdowns();
             showToast("Question deleted from database");
             executeSearch(); // Refresh search results
+        }
+
+        function deleteQuestionById(qId) {
+            const dbIndex = db.findIndex(item => item.id === qId);
+            if (dbIndex === -1) {
+                showToast("Question not found in database");
+                return;
+            }
+            if (!confirm("Are you sure you want to permanently delete this question from the database?")) return;
+            
+            const deletedQ = db[dbIndex];
+            db.splice(dbIndex, 1);
+
+            // Remove from paper if present
+            currentPaperQuestions = currentPaperQuestions.filter(q => q.id !== qId);
+            renderPaper();
+
+            addedQuestionIds = new Set(); // Reset as indices have shifted
+            updateDbCount();
+            updateDropdowns();
+            showToast("Question deleted from database 🗑️");
+            executeSearch(); // Refresh search results if open
         }
 
         // ============ FLAGGING ============
@@ -3259,6 +3872,7 @@
                                     <button class="action-btn" onclick="toggleHint(${index})" data-tooltip="Hint">💡</button>
                                     <button class="action-btn flag-btn ${isFlagged ? 'active' : ''}" onclick="toggleFlag('${item.id}')" data-tooltip="Flag">${isFlagged ? '🚩' : '🏳️'}</button>
                                     ${isReviewMode ? `<button class="action-btn" onclick="startEditQuestion('${item.id}')" style="background:var(--admin); color:white;" data-tooltip="Edit">📝 Edit</button>` : ''}
+                                    <button class="action-btn btn-delete-db" onclick="deleteQuestionById('${item.id}')" data-tooltip="Delete from Bank">🗑️</button>
                                 </div>
                                 <div class="q-meta">Q${index + 1} <span class="tag">${item.s || ''}</span> <span class="tag">${item.lvl || ''}</span> <span class="tag">${item.top || ''}</span> <span class="tag" style="background:${getDiffColor(item.dif)}">${item.dif || ''}</span></div>
                                 <div class="q-layout">
