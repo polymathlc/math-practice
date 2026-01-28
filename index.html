@@ -800,11 +800,26 @@
 
         .explanation-box {
             margin-top: 5px;
-            padding: 10px;
+            padding: 15px;
             background-color: #f0f8ff;
             border-left: 3px solid #3498db;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #2c3e50;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+        
+        .explanation-box b, .explanation-box strong {
+            display: block;
+            margin-top: 8px;
+            margin-bottom: 4px;
+            color: #2980b9;
+        }
+        
+        .explanation-box br {
+            display: block;
+            content: "";
+            margin-top: 6px;
         }
 
         .school-header {
@@ -25596,7 +25611,7 @@
 
             if (q.exp) {
                 document.getElementById('prevExpSection').style.display = 'block';
-                document.getElementById('prevExp').innerHTML = formatText(q.exp);
+                document.getElementById('prevExp').innerHTML = formatExplanation(q.exp);
             } else {
                 document.getElementById('prevExpSection').style.display = 'none';
             }
@@ -26198,7 +26213,7 @@
                                 </div>
                                 <div class="answer-key-section" style="display:${showAnswers ? 'block' : 'none'}">
                                     <strong>Answer:</strong> ${formattedA}
-                                    ${item.exp ? `<div class="explanation-box"><strong>Explanation:</strong> ${formatText(item.exp)}</div>` : ''}
+                                    ${item.exp ? `<div class="explanation-box"><strong>Explanation:</strong> ${formatExplanation(item.exp)}</div>` : ''}
                                     ${item.vid ? `
                                         <div class="video-explanation" style="margin-top:15px;">
                                             <video controls style="width:100%; max-width:600px; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.15); border:1px solid #eee;">
@@ -26632,6 +26647,35 @@
             // Stylistic refinements
             f = f.replace(/\?/g, '<span class="question-mark">?</span>');
             f = f.replace(/(\d+)\s*:\s*(\d+)/g, '$1 : $2');
+            return f;
+        }
+        
+        // Format explanation text with line breaks for readability
+        function formatExplanation(text) {
+            if (!text) return '';
+            let f = formatText(text);
+            
+            // Add line breaks before common step indicators
+            f = f.replace(/(Step\s*\d+[:\.]?)/gi, '<br><br><b>$1</b>');
+            f = f.replace(/(Method\s*\d*\s*:)/gi, '<br><br><b>$1</b>');
+            f = f.replace(/\s(Check:)/gi, '<br><br><b>$1</b>');
+            f = f.replace(/\s(Answer:)/gi, '<br><br><b>$1</b>');
+            f = f.replace(/\s(Therefore,?)/gi, '<br><br>$1');
+            f = f.replace(/\s(Hence,?)/gi, '<br><br>$1');
+            f = f.replace(/([.!])\s+(So,)/gi, '$1<br><br>$2');
+            
+            // Add breaks after bold answers/results
+            f = f.replace(/(<\/b>)(\s*)([A-Z])/g, '$1<br>$3');
+            
+            // Add breaks after checkmarks or key results
+            f = f.replace(/(✓|✔)/g, '$1<br>');
+            
+            // Clean up multiple consecutive <br> tags
+            f = f.replace(/(<br\s*\/?>\s*){3,}/gi, '<br><br>');
+            
+            // Remove leading <br> tags
+            f = f.replace(/^(<br\s*\/?>\s*)+/gi, '');
+            
             return f;
         }
 
