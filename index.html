@@ -1691,10 +1691,10 @@
 
         .mcq-print-bracket {
             display: none;
-            float: right;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
-            margin-top: -30px;
+            margin-left: 12px;
+            flex-shrink: 0;
         }
 
         /* Keep old classes for backwards compatibility */
@@ -1852,23 +1852,68 @@
                 margin: 0;
             }
 
+            .cover-page,
+            .school-header,
+            .q-meta,
+            .working-space-container,
+            .answer-key-section,
+            .feedback-tick {
+                display: none !important;
+            }
+
             .sheet {
                 box-shadow: none;
                 margin: 0;
                 border: none;
                 width: 100%;
-                min-height: auto;
+                min-height: 267mm;
                 padding: 0;
                 page-break-after: always;
                 overflow: visible;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
             }
 
             .sheet:last-child {
                 page-break-after: auto;
             }
 
+            .question-wrapper {
+                min-height: 50%;
+                page-break-inside: avoid;
+                break-inside: avoid;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+            }
+
+            .question-block {
+                border: none;
+                border-radius: 0;
+                background: transparent;
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+                min-height: 48%;
+            }
+
+            .q-layout {
+                margin-bottom: 10px;
+            }
+
             .interaction-area {
                 display: none;
+            }
+
+            .mcq-btn {
+                border: none !important;
+                background: transparent !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                padding: 4px 0 !important;
+                transform: none !important;
+                cursor: default !important;
             }
 
             .mcq-option input[type="radio"] {
@@ -1876,11 +1921,13 @@
             }
 
             .mcq-print-bracket {
-                display: block;
+                display: inline-block;
             }
 
             .print-answer-line.open-ended {
                 display: block;
+                text-align: left;
+                margin-top: 10px;
             }
 
             .working-space-container {
@@ -3810,14 +3857,15 @@
                 return;
             }
 
-            // Prepend Cover Page
-            container.appendChild(generateCoverPage(currentPaperQuestions));
-
-            let currentPage = createPage(2);
-            container.appendChild(currentPage);
+            let currentPage = null;
 
             currentPaperQuestions.forEach((item, index) => {
                 try {
+                    if (index % 2 === 0) {
+                        currentPage = createPage(Math.floor(index / 2) + 1);
+                        container.appendChild(currentPage);
+                    }
+
                     const formattedQ = formatText(item.q);
                     const formattedA = formatText(item.a);
                     const mcqData = parseMCQ(item.q);
@@ -3831,6 +3879,7 @@
                             inputHTML += `<button type="button" class="mcq-btn" data-value="${i + 1}" onclick="selectMCQOption(this, ${index})">
                                 <span class="option-num">${i + 1}</span>
                                 <span class="option-text">${formatText(opt)}</span>
+                                <span class="mcq-print-bracket">[ ]</span>
                             </button>`;
                         });
                         inputHTML += '</div>';
@@ -3857,6 +3906,7 @@
                                 <span class="feedback-tick" id="tick-${index}">✓</span>
                             </div>
                         </div>`;
+                        inputHTML += `<div class="print-answer-line open-ended">Ans : ____________</div>`;
                     }
 
                     const isFlagged = flaggedIds.has(item.id);
