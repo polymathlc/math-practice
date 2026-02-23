@@ -1748,6 +1748,10 @@
             text-align: right;
         }
 
+        .print-corner-answer {
+            display: none;
+        }
+
         .working-space {
             height: 150px;
             width: 100%;
@@ -1888,6 +1892,10 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
+                position: relative;
+                box-sizing: border-box;
+                padding-top: 6mm;
+                padding-bottom: 6mm;
             }
 
             .question-block {
@@ -1897,11 +1905,11 @@
                 box-shadow: none;
                 margin: 0;
                 padding: 0;
-                min-height: 48%;
+                min-height: auto;
             }
 
             .q-layout {
-                margin-bottom: 10px;
+                margin-bottom: 0;
             }
 
             .interaction-area {
@@ -1922,14 +1930,19 @@
                 display: none;
             }
 
-            .mcq-print-bracket {
-                display: inline-block;
+            .print-answer-line.open-ended {
+                display: none;
             }
 
-            .print-answer-line.open-ended {
+            .print-corner-answer {
                 display: block;
-                text-align: left;
-                margin-top: 10px;
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                font-weight: bold;
+                font-size: 1.05rem;
+                text-align: right;
+                white-space: pre;
             }
 
             .working-space-container {
@@ -3881,11 +3894,11 @@
                             inputHTML += `<button type="button" class="mcq-btn" data-value="${i + 1}" onclick="selectMCQOption(this, ${index})">
                                 <span class="option-num">${i + 1}</span>
                                 <span class="option-text">${formatText(opt)}</span>
-                                <span class="mcq-print-bracket">[ ]</span>
                             </button>`;
                         });
                         inputHTML += '</div>';
                         inputHTML += `<span class="feedback-tick" id="tick-${index}">✓</span>`;
+                        inputHTML += `<div class="print-corner-answer mcq">[            ]</div>`;
                     } else {
                         const parts = parseMultipartAnswer(item.a, item.u);
                         inputHTML = `<div class="interaction-area">`;
@@ -3908,7 +3921,7 @@
                                 <span class="feedback-tick" id="tick-${index}">✓</span>
                             </div>
                         </div>`;
-                        inputHTML += `<div class="print-answer-line open-ended">Ans : ____________</div>`;
+                        inputHTML += `<div class="print-corner-answer open-ended">Ans : ____________</div>`;
                     }
 
                     const isFlagged = flaggedIds.has(item.id);
