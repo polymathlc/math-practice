@@ -1875,20 +1875,25 @@
                 padding: 0;
                 page-break-after: always;
                 overflow: visible;
-                display: grid !important;
-                grid-template-rows: 1fr 1fr;
-                align-items: stretch;
+                display: block !important;
             }
 
             .sheet:last-child {
                 page-break-after: auto;
             }
 
+            .print-slot {
+                height: 50%;
+                min-height: 50%;
+                position: relative;
+                overflow: hidden;
+            }
+
             .question-wrapper {
                 height: auto !important;
                 min-height: 0 !important;
-                page-break-inside: avoid;
-                break-inside: avoid;
+                page-break-inside: auto !important;
+                break-inside: auto !important;
                 display: block !important;
                 position: relative;
                 box-sizing: border-box;
@@ -1898,6 +1903,8 @@
             }
 
             .question-block {
+                page-break-inside: auto !important;
+                break-inside: auto !important;
                 border: none;
                 border-radius: 0;
                 background: transparent;
@@ -3877,12 +3884,14 @@
             }
 
             let currentPage = null;
+            let currentPageSlots = [];
 
             currentPaperQuestions.forEach((item, index) => {
                 try {
                     if (index % 2 === 0) {
                         currentPage = createPage(Math.floor(index / 2) + 1);
                         container.appendChild(currentPage);
+                        currentPageSlots = Array.from(currentPage.querySelectorAll('.print-slot'));
                     }
 
                     const formattedQ = formatText(item.q);
@@ -3975,7 +3984,8 @@
 
                     const tempDiv = document.createElement('div');
                     tempDiv.innerHTML = qHTML;
-                    currentPage.appendChild(tempDiv.firstElementChild);
+                    const slot = currentPageSlots[index % 2] || currentPage;
+                    slot.appendChild(tempDiv.firstElementChild);
                     setTimeout(() => initCanvas(index), 0);
                     qStartTimes[index] = Date.now();
                 } catch (e) { console.error("Error rendering Q" + index, e); }
@@ -4046,6 +4056,8 @@
                 <div class="school-header" style="font-size: 1rem; margin-bottom: 20px; border-bottom: 2px solid #ccc; padding-bottom: 5px; text-align: right; font-weight: normal; color: #7f8c8d;">
                     Mathematics Practice — Page ${num}
                 </div>
+                <div class="print-slot"></div>
+                <div class="print-slot"></div>
             `;
             return div;
         }
