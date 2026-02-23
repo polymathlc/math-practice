@@ -1875,9 +1875,9 @@
                 padding: 0;
                 page-break-after: always;
                 overflow: visible;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
+                display: grid !important;
+                grid-template-rows: 1fr 1fr;
+                align-items: stretch;
             }
 
             .sheet:last-child {
@@ -1885,17 +1885,16 @@
             }
 
             .question-wrapper {
-                height: 50%;
-                min-height: 50%;
+                height: auto !important;
+                min-height: 0 !important;
                 page-break-inside: avoid;
                 break-inside: avoid;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
+                display: block !important;
                 position: relative;
                 box-sizing: border-box;
-                padding-top: 6mm;
-                padding-bottom: 6mm;
+                margin: 0 !important;
+                padding: 8mm 0 4mm 0;
+                overflow: hidden;
             }
 
             .question-block {
@@ -1906,6 +1905,9 @@
                 margin: 0;
                 padding: 0;
                 min-height: auto;
+                height: 100%;
+                position: relative;
+                padding-bottom: 12mm;
             }
 
             .q-layout {
@@ -1943,6 +1945,8 @@
                 font-size: 1.05rem;
                 text-align: right;
                 white-space: pre;
+                background: white;
+                padding-left: 6mm;
             }
 
             .working-space-container {
@@ -3888,6 +3892,7 @@
                     const qId = `q${index}`;
 
                     let inputHTML = '';
+                    let printCornerHTML = '';
                     if (isMCQ) {
                         inputHTML = `<div class="mcq-container" data-correct="${item.a}" data-qindex="${index}">`;
                         mcqData.options.forEach((opt, i) => {
@@ -3898,7 +3903,7 @@
                         });
                         inputHTML += '</div>';
                         inputHTML += `<span class="feedback-tick" id="tick-${index}">✓</span>`;
-                        inputHTML += `<div class="print-corner-answer mcq">[            ]</div>`;
+                        printCornerHTML = `<div class="print-corner-answer mcq">[            ]</div>`;
                     } else {
                         const parts = parseMultipartAnswer(item.a, item.u);
                         inputHTML = `<div class="interaction-area">`;
@@ -3921,7 +3926,7 @@
                                 <span class="feedback-tick" id="tick-${index}">✓</span>
                             </div>
                         </div>`;
-                        inputHTML += `<div class="print-corner-answer open-ended">Ans : ____________</div>`;
+                        printCornerHTML = `<div class="print-corner-answer open-ended">Ans : ____________</div>`;
                     }
 
                     const isFlagged = flaggedIds.has(item.id);
@@ -3944,6 +3949,7 @@
                                     <div class="q-number-col">${index + 1}.</div>
                                     <div class="q-content-col">${qMainContent}${inputHTML}</div>
                                 </div>
+                                ${printCornerHTML}
                                 <div class="answer-key-section" style="display:${showAnswers ? 'block' : 'none'}">
                                     <strong>Answer:</strong> ${formattedA}
                                     ${item.exp ? `<div class="explanation-box"><strong>Explanation:</strong> ${formatExplanation(item.exp)}</div>` : ''}
