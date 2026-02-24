@@ -1876,14 +1876,14 @@
             }
 
             .cover-page {
-                display: flex !important;
-                flex-direction: column;
-                align-items: center;
+                display: block !important;
+                text-align: center;
                 padding: 15mm 10mm;
-                height: 267mm;
-                min-height: 267mm;
+                height: auto;
+                min-height: auto;
                 page-break-after: always;
                 box-sizing: border-box;
+                overflow: visible;
             }
 
             .cover-page .school-header {
@@ -1948,6 +1948,25 @@
                 page-break-after: always;
                 overflow: visible;
                 display: block !important;
+            }
+
+            .sheet.cover-page {
+                height: auto;
+                min-height: auto;
+                overflow: visible;
+                page-break-inside: auto;
+            }
+
+            .cover-table {
+                page-break-inside: auto;
+            }
+
+            .cover-table tr {
+                page-break-inside: avoid;
+            }
+
+            .cover-table thead {
+                display: table-header-group;
             }
 
             .sheet:last-child {
