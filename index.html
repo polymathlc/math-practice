@@ -64,6 +64,10 @@
             border-color: #636e72;
         }
 
+        body.dark-mode .interaction-area.multi-part {
+            border-top-color: #555;
+        }
+
         body.dark-mode canvas {
             filter: invert(1) hue-rotate(180deg);
         }
@@ -1572,7 +1576,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-top: 8px;
+            margin-top: 4px;
         }
 
         .part-label {
@@ -1580,6 +1584,12 @@
             min-width: 25px;
             color: var(--secondary);
             font-size: 0.9rem;
+        }
+
+        .interaction-area.multi-part {
+            margin-top: 30px;
+            padding-top: 12px;
+            border-top: 1px dashed #ddd;
         }
 
         .mcq-container {
@@ -1711,9 +1721,10 @@
         .interaction-area {
             margin-bottom: 15px;
             display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+            margin-top: 20px;
         }
 
         .student-input {
@@ -3915,7 +3926,8 @@
                         printCornerHTML = `<div class="print-corner-answer mcq">[            ]</div>`;
                     } else {
                         const parts = parseMultipartAnswer(item.a, item.u);
-                        inputHTML = `<div class="interaction-area">`;
+                        const isMultiPart = parts.length > 1 && parts[0].label;
+                        inputHTML = `<div class="interaction-area${isMultiPart ? ' multi-part' : ''}">`;
                         parts.forEach((p, pIdx) => {
                             const isDollar = p.unit.includes('$');
                             const unitDisplay = isDollar ? `<span class="unit-label" style="margin-right:5px; font-weight:bold;">$</span>` : '';
@@ -3925,7 +3937,7 @@
                                 <div class="part-row">
                                     ${p.label ? `<span class="part-label">${p.label}</span>` : ''}
                                     ${unitDisplay}
-                                    <input type="text" class="student-input" placeholder="Answer" data-correct="${p.ans}" style="flex:1;">
+                                    <input type="text" class="student-input" placeholder="Answer" data-correct="${p.ans}">
                                     ${postUnitDisplay}
                                 </div>`;
                         });
