@@ -2696,6 +2696,71 @@
             border-top: 2px solid #333;
             background: #f8f9fa;
         }
+
+        /* Saved Worksheets */
+        .saved-ws-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            background: var(--paper);
+            transition: border-color 0.2s;
+        }
+
+        .saved-ws-item:hover {
+            border-color: var(--accent);
+        }
+
+        .saved-ws-info {
+            flex: 1;
+            min-width: 0;
+            cursor: pointer;
+        }
+
+        .saved-ws-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .saved-ws-meta {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-top: 3px;
+        }
+
+        .saved-ws-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+            margin-left: 12px;
+        }
+
+        .saved-ws-actions button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .saved-ws-actions button:hover {
+            opacity: 0.85;
+        }
+
+        .saved-ws-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #7f8c8d;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
@@ -2846,6 +2911,8 @@
             <button onclick="loadFlaggedPaper()" style="background:#f1c40f; color:#000;">Flags <span id="flagCount"
                     class="count-badge">0</span></button>
 
+            <button onclick="saveWorksheet()" style="background:#27ae60;">Save</button>
+            <button onclick="openSavedWorksheetsModal()" style="background:#2d3436;">Load</button>
             <button onclick="window.print()" style="background:#7f8c8d;">Print PDF</button>
             <button onclick="clearAllQuestions()" style="background:#c0392b;">Clear All</button>
             <button onclick="toggleAdmin()" style="background:#8e44ad;">Admin</button>
@@ -2906,6 +2973,17 @@
             <span class="focus-close" onclick="toggleStats()">×</span>
             <h2>Topic Breakdown 📊</h2>
             <div id="stats-content" class="stats-bar-container"></div>
+        </div>
+    </div>
+
+    <!-- SAVED WORKSHEETS MODAL -->
+    <div id="savedWorksheetsModal" class="focus-overlay" style="display:none; align-items:flex-start; padding-top:40px;">
+        <div class="focus-card" style="max-width:600px; max-height:80vh; display:flex; flex-direction:column;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h2 style="margin:0;">Saved Worksheets</h2>
+                <span class="focus-close" onclick="closeSavedWorksheetsModal()">&times;</span>
+            </div>
+            <div id="savedWorksheetsList" style="flex:1; overflow-y:auto;"></div>
         </div>
     </div>
 
@@ -4179,6 +4257,97 @@
             if (pool.length === 0) { alert("No more questions available."); return; }
             currentPaperQuestions.splice(index, 0, pool[Math.floor(Math.random() * pool.length)]);
             renderPaper();
+        }
+
+        // ============ SAVE / LOAD WORKSHEETS ============
+        function getSavedWorksheets() {
+            try {
+                return JSON.parse(localStorage.getItem('mathGenSavedWorksheets')) || [];
+            } catch (e) { return []; }
+        }
+
+        function setSavedWorksheets(list) {
+            localStorage.setItem('mathGenSavedWorksheets', JSON.stringify(list));
+        }
+
+        function saveWorksheet() {
+            if (!currentPaperQuestions || currentPaperQuestions.length === 0) {
+                showToast("Nothing to save — worksheet is empty");
+                return;
+            }
+            const defaultName = 'Worksheet ' + new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            const name = prompt("Name this worksheet:", defaultName);
+            if (!name) return;
+
+            const saved = getSavedWorksheets();
+            saved.push({
+                name: name.trim(),
+                date: new Date().toISOString(),
+                questions: JSON.parse(JSON.stringify(currentPaperQuestions))
+            });
+            setSavedWorksheets(saved);
+            showToast("Worksheet saved");
+        }
+
+        function openSavedWorksheetsModal() {
+            const modal = document.getElementById('savedWorksheetsModal');
+            modal.style.display = 'flex';
+            renderSavedWorksheetsList();
+            document.addEventListener('keydown', handleSavedWsKeydown);
+        }
+
+        function closeSavedWorksheetsModal() {
+            document.getElementById('savedWorksheetsModal').style.display = 'none';
+            document.removeEventListener('keydown', handleSavedWsKeydown);
+        }
+
+        function handleSavedWsKeydown(e) { if (e.key === 'Escape') closeSavedWorksheetsModal(); }
+
+        function renderSavedWorksheetsList() {
+            const container = document.getElementById('savedWorksheetsList');
+            const saved = getSavedWorksheets();
+
+            if (saved.length === 0) {
+                container.innerHTML = `<div class="saved-ws-empty"><p style="font-size:1.5rem; margin-bottom:10px;">No saved worksheets</p><p>Use the <strong>Save</strong> button to save your current worksheet.</p></div>`;
+                return;
+            }
+
+            container.innerHTML = saved.map((ws, i) => {
+                const d = new Date(ws.date);
+                const dateStr = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                const timeStr = d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                const qCount = ws.questions ? ws.questions.length : 0;
+                return `
+                    <div class="saved-ws-item">
+                        <div class="saved-ws-info" onclick="loadSavedWorksheet(${i})">
+                            <div class="saved-ws-name">${ws.name}</div>
+                            <div class="saved-ws-meta">${qCount} question${qCount !== 1 ? 's' : ''} &middot; ${dateStr} ${timeStr}</div>
+                        </div>
+                        <div class="saved-ws-actions">
+                            <button onclick="loadSavedWorksheet(${i})" style="background:var(--accent); color:white;">Load</button>
+                            <button onclick="deleteSavedWorksheet(${i})" style="background:#e74c3c; color:white;">Delete</button>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        function loadSavedWorksheet(index) {
+            const saved = getSavedWorksheets();
+            if (!saved[index]) return;
+            currentPaperQuestions = JSON.parse(JSON.stringify(saved[index].questions));
+            renderPaper();
+            closeSavedWorksheetsModal();
+            showToast("Loaded: " + saved[index].name);
+        }
+
+        function deleteSavedWorksheet(index) {
+            const saved = getSavedWorksheets();
+            if (!saved[index]) return;
+            if (!confirm(`Delete "${saved[index].name}"?`)) return;
+            saved.splice(index, 1);
+            setSavedWorksheets(saved);
+            renderSavedWorksheetsList();
+            showToast("Worksheet deleted");
         }
 
         // ============ ANSWER CHECKING ============
