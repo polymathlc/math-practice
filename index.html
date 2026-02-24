@@ -2934,6 +2934,28 @@
             <input type="checkbox" id="showAnswers" onchange="toggleAnswers()">
             <label for="showAnswers" style="cursor:pointer; color:black; font-size:0.8rem;">Show Key</label>
         </div>
+
+        <!-- WORKSHEET OPTIONS -->
+        <div class="control-group" style="margin-top:8px;">
+            <label style="font-size:0.75rem; font-weight:600; color:#555; text-transform:uppercase; letter-spacing:0.5px;">Worksheet Options</label>
+            <div style="display:flex; flex-direction:column; gap:4px;">
+                <label style="font-size:0.8rem; cursor:pointer; display:flex; align-items:center; gap:5px;">
+                    <input type="checkbox" id="wsOptCover" checked onchange="renderPaper()"> Cover Page
+                </label>
+                <label style="font-size:0.8rem; cursor:pointer; display:flex; align-items:center; gap:5px;">
+                    <input type="checkbox" id="wsOptLogo" checked onchange="renderPaper()"> Logo
+                </label>
+                <label style="font-size:0.8rem; cursor:pointer; display:flex; align-items:center; gap:5px;">
+                    <input type="checkbox" id="wsOptTable" checked onchange="renderPaper()"> Question Table
+                </label>
+                <div style="display:flex; align-items:center; gap:5px; margin-top:2px;">
+                    <input type="text" id="wsOptTitle" placeholder="Custom title..." value="MATHEMATICS WORKSHEET"
+                        onchange="renderPaper()"
+                        style="flex:1; padding:5px 8px; border:1px solid #ddd; border-radius:6px; font-size:0.8rem;">
+                </div>
+            </div>
+        </div>
+
         <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
         <div id="user-info" style="text-align:center; margin-bottom: 10px;">
             <p id="login-days-display" style="font-size:0.9rem; font-weight:bold; color:var(--accent);">Loading days...
@@ -3354,20 +3376,18 @@
         let cachedLogoDataUri = localStorage.getItem('mathGenLogoDataUri') || '';
 
         function cacheLogoAsDataUri() {
-            const img = new Image();
-            img.crossOrigin = 'anonymous';
-            img.onload = function () {
-                try {
-                    const c = document.createElement('canvas');
-                    c.width = img.naturalWidth;
-                    c.height = img.naturalHeight;
-                    c.getContext('2d').drawImage(img, 0, 0);
-                    cachedLogoDataUri = c.toDataURL('image/png');
-                    localStorage.setItem('mathGenLogoDataUri', cachedLogoDataUri);
-                    document.querySelectorAll('.polymath-logo').forEach(el => el.src = cachedLogoDataUri);
-                } catch (e) { console.warn('Logo cache failed:', e); }
-            };
-            img.src = LOGO_DROPBOX_URL;
+            fetch(LOGO_DROPBOX_URL)
+                .then(r => r.blob())
+                .then(blob => {
+                    const reader = new FileReader();
+                    reader.onloadend = function () {
+                        cachedLogoDataUri = reader.result;
+                        localStorage.setItem('mathGenLogoDataUri', cachedLogoDataUri);
+                        document.querySelectorAll('.polymath-logo').forEach(el => el.src = cachedLogoDataUri);
+                    };
+                    reader.readAsDataURL(blob);
+                })
+                .catch(e => console.warn('Logo cache failed:', e));
         }
 
         function getLogoSrc() {
@@ -4051,6 +4071,7 @@
             }
 
             currentPaperQuestions = pool.slice(0, qCount);
+            loadedWorksheetIndex = -1;
             renderPaper();
             closeGenModal();
             showToast(`Generated worksheet with ${currentPaperQuestions.length} questions`);
@@ -4070,9 +4091,12 @@
                 return;
             }
 
-            // Add cover page with question summary table
-            const coverPage = generateCoverPage(currentPaperQuestions);
-            container.appendChild(coverPage);
+            // Add cover page with question summary table (if enabled)
+            const showCover = document.getElementById('wsOptCover').checked;
+            if (showCover) {
+                const coverPage = generateCoverPage(currentPaperQuestions);
+                container.appendChild(coverPage);
+            }
 
             let currentPage = null;
             let currentPageSlots = [];
@@ -4194,39 +4218,58 @@
             const page = document.createElement('div');
             page.className = 'sheet cover-page';
 
+            const showLogo = document.getElementById('wsOptLogo').checked;
+            const showTable = document.getElementById('wsOptTable').checked;
+            const customTitle = document.getElementById('wsOptTitle').value.trim() || 'MATHEMATICS WORKSHEET';
             const logoUrl = getLogoSrc();
 
-            let tableRows = '';
-            questions.forEach((q, i) => {
-                // Extract hashtags as concepts
-                const concepts = (q.tags || '').match(/#[a-z0-9]+/gi) || [];
-                const conceptDisplay = concepts.length > 0 ? concepts.join(', ').replace(/#/g, '') : '-';
+            // Logo section
+            const logoHTML = showLogo
+                ? `<div style="text-align: center; margin-bottom: 15px;"><img src="${logoUrl}" style="max-width: 160px; height: auto;"></div>`
+                : '';
 
+            // Table section
+            let tableHTML = '';
+            if (showTable) {
+                let tableRows = '';
+                questions.forEach((q, i) => {
+                    const concepts = (q.tags || '').match(/#[a-z0-9]+/gi) || [];
+                    const conceptDisplay = concepts.length > 0 ? concepts.join(', ').replace(/#/g, '') : '-';
+                    tableRows += `
+                        <tr>
+                            <td class="sn-col">${i + 1}</td>
+                            <td>${q.top || 'General'}</td>
+                            <td>${q.lvl || '-'}</td>
+                            <td>${q.dif || 'Medium'}</td>
+                            <td>${conceptDisplay}</td>
+                            <td class="marks-col"><span class="marks-blank"></span></td>
+                        </tr>`;
+                });
                 tableRows += `
-                    <tr>
-                        <td class="sn-col">${i + 1}</td>
-                        <td>${q.top || 'General'}</td>
-                        <td>${q.lvl || '-'}</td>
-                        <td>${q.dif || 'Medium'}</td>
-                        <td>${conceptDisplay}</td>
+                    <tr class="cover-total-row">
+                        <td colspan="5" style="text-align: right; font-weight: bold;">Total</td>
                         <td class="marks-col"><span class="marks-blank"></span></td>
-                    </tr>
-                `;
-            });
-
-            // Total row
-            tableRows += `
-                <tr class="cover-total-row">
-                    <td colspan="5" style="text-align: right; font-weight: bold;">Total</td>
-                    <td class="marks-col"><span class="marks-blank"></span></td>
-                </tr>
-            `;
+                    </tr>`;
+                tableHTML = `
+                    <div class="cover-section-title">Question Summary & Mark Sheet</div>
+                    <table class="cover-table">
+                        <thead>
+                            <tr>
+                                <th class="sn-col">Q</th>
+                                <th>Topic</th>
+                                <th>Level</th>
+                                <th>Difficulty</th>
+                                <th>Concept</th>
+                                <th class="marks-col">Marks</th>
+                            </tr>
+                        </thead>
+                        <tbody>${tableRows}</tbody>
+                    </table>`;
+            }
 
             page.innerHTML = `
-                <div style="text-align: center; margin-bottom: 15px;">
-                    <img src="${logoUrl}" style="max-width: 160px; height: auto;" crossorigin="anonymous">
-                </div>
-                <div class="school-header" style="font-size: 1.6rem; margin-bottom: 10px; font-family: 'Century Gothic', sans-serif; font-weight: bold; letter-spacing: 1px;">MATHEMATICS WORKSHEET</div>
+                ${logoHTML}
+                <div class="school-header" style="font-size: 1.6rem; margin-bottom: 10px; font-family: 'Century Gothic', sans-serif; font-weight: bold; letter-spacing: 1px;">${customTitle}</div>
 
                 <div style="width: 100%; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px;">
                     <div>
@@ -4239,22 +4282,7 @@
                     </div>
                 </div>
 
-                <div class="cover-section-title">Question Summary & Mark Sheet</div>
-                <table class="cover-table">
-                    <thead>
-                        <tr>
-                            <th class="sn-col">Q</th>
-                            <th>Topic</th>
-                            <th>Level</th>
-                            <th>Difficulty</th>
-                            <th>Concept</th>
-                            <th class="marks-col">Marks</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${tableRows}
-                    </tbody>
-                </table>
+                ${tableHTML}
 
                 <div style="margin-top: auto; width: 100%; text-align: right; font-family: 'Century Gothic', sans-serif; color: #7f8c8d; font-size: 0.8rem;">
                     Generated by MathGen v2.0 &bull; Polymath Learning Centre
@@ -4285,6 +4313,7 @@
             }
             if (confirm(`Clear all ${currentPaperQuestions.length} questions from the worksheet?`)) {
                 currentPaperQuestions = [];
+                loadedWorksheetIndex = -1;
                 renderPaper();
                 showToast("Worksheet cleared");
             }
@@ -4298,6 +4327,8 @@
         }
 
         // ============ SAVE / LOAD WORKSHEETS ============
+        let loadedWorksheetIndex = -1; // tracks which saved worksheet is currently loaded
+
         function getSavedWorksheets() {
             try {
                 return JSON.parse(localStorage.getItem('mathGenSavedWorksheets')) || [];
@@ -4313,17 +4344,31 @@
                 showToast("Nothing to save — worksheet is empty");
                 return;
             }
+            const saved = getSavedWorksheets();
+
+            // If loaded from a saved worksheet, offer to update it
+            if (loadedWorksheetIndex >= 0 && saved[loadedWorksheetIndex]) {
+                const existing = saved[loadedWorksheetIndex];
+                if (confirm(`Update "${existing.name}"?\n\nOK = Update existing\nCancel = Save as new`)) {
+                    existing.date = new Date().toISOString();
+                    existing.questions = JSON.parse(JSON.stringify(currentPaperQuestions));
+                    setSavedWorksheets(saved);
+                    showToast("Worksheet updated");
+                    return;
+                }
+            }
+
             const defaultName = 'Worksheet ' + new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
             const name = prompt("Name this worksheet:", defaultName);
             if (!name) return;
 
-            const saved = getSavedWorksheets();
             saved.push({
                 name: name.trim(),
                 date: new Date().toISOString(),
                 questions: JSON.parse(JSON.stringify(currentPaperQuestions))
             });
             setSavedWorksheets(saved);
+            loadedWorksheetIndex = saved.length - 1;
             showToast("Worksheet saved");
         }
 
@@ -4373,6 +4418,7 @@
             const saved = getSavedWorksheets();
             if (!saved[index]) return;
             currentPaperQuestions = JSON.parse(JSON.stringify(saved[index].questions));
+            loadedWorksheetIndex = index;
             renderPaper();
             closeSavedWorksheetsModal();
             showToast("Loaded: " + saved[index].name);
