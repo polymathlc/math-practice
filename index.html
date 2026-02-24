@@ -1867,13 +1867,74 @@
                 margin: 0;
             }
 
-            .cover-page,
             .school-header,
             .q-meta,
             .working-space-container,
             .answer-key-section,
             .feedback-tick {
                 display: none !important;
+            }
+
+            .cover-page {
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                padding: 15mm 10mm;
+                height: 267mm;
+                min-height: 267mm;
+                page-break-after: always;
+                box-sizing: border-box;
+            }
+
+            .cover-page .school-header {
+                display: block !important;
+            }
+
+            .cover-page img {
+                max-width: 160px;
+                height: auto;
+            }
+
+            .cover-table {
+                width: 100%;
+                border-collapse: collapse;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .cover-table th {
+                background-color: #f0f0f0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .cover-table .marks-col {
+                background: #fafafa !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .cover-table th,
+            .cover-table td {
+                border: 1px solid #999;
+                padding: 8px 10px;
+                font-size: 0.85rem;
+            }
+
+            .cover-total-row td {
+                border-top: 2px solid #333;
+                background: #f0f0f0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .cover-section-title {
+                display: block !important;
+            }
+
+            .student-name-input {
+                border: none !important;
+                border-bottom: 1px solid black !important;
             }
 
             .sheet {
@@ -2622,13 +2683,18 @@
         }
 
         .cover-section-title {
-            margin-top: 40px;
-            font-size: 1.4rem;
+            margin-top: 20px;
+            font-size: 1.2rem;
             color: var(--secondary);
             font-weight: bold;
             border-bottom: 2px solid var(--secondary);
             padding-bottom: 5px;
             width: 100%;
+        }
+
+        .cover-total-row td {
+            border-top: 2px solid #333;
+            background: #f8f9fa;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -3894,6 +3960,10 @@
                 return;
             }
 
+            // Add cover page with question summary table
+            const coverPage = generateCoverPage(currentPaperQuestions);
+            container.appendChild(coverPage);
+
             let currentPage = null;
             let currentPageSlots = [];
 
@@ -4020,6 +4090,7 @@
                     <tr>
                         <td class="sn-col">${i + 1}</td>
                         <td>${q.top || 'General'}</td>
+                        <td>${q.lvl || '-'}</td>
                         <td>${q.dif || 'Medium'}</td>
                         <td>${conceptDisplay}</td>
                         <td class="marks-col"><span class="marks-blank"></span></td>
@@ -4027,23 +4098,38 @@
                 `;
             });
 
+            // Total row
+            tableRows += `
+                <tr class="cover-total-row">
+                    <td colspan="5" style="text-align: right; font-weight: bold;">Total</td>
+                    <td class="marks-col"><span class="marks-blank"></span></td>
+                </tr>
+            `;
+
             page.innerHTML = `
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <img src="${logoUrl}" style="max-width: 180px; height: auto;">
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <img src="${logoUrl}" style="max-width: 160px; height: auto;" crossorigin="anonymous">
                 </div>
-                <div class="school-header" style="font-size: 1.8rem; margin-bottom: 30px;">MATHEMATICS PRACTICE SUMMARY</div>
-                
-                <div style="width: 100%; margin-bottom: 20px;">
-                    <input class="student-name-input" placeholder="Name: __________________________" style="width: 300px; font-size: 1.1rem; border: none; border-bottom: 2px solid #333; padding: 5px;">
-                    <span style="float: right; font-weight: bold; font-family: 'Century Gothic', sans-serif;">Date: ______________</span>
+                <div class="school-header" style="font-size: 1.6rem; margin-bottom: 10px; font-family: 'Century Gothic', sans-serif; font-weight: bold; letter-spacing: 1px;">MATHEMATICS WORKSHEET</div>
+
+                <div style="width: 100%; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <span style="font-family: 'Century Gothic', sans-serif; font-size: 0.95rem; color: #555;">Name:</span>
+                        <input class="student-name-input" placeholder="__________________________" style="width: 260px; font-size: 1.1rem; border: none; border-bottom: 2px solid #333; padding: 5px; background: transparent;">
+                    </div>
+                    <div>
+                        <span style="font-family: 'Century Gothic', sans-serif; font-size: 0.95rem; color: #555;">Date:</span>
+                        <span style="font-family: 'Century Gothic', sans-serif; border-bottom: 2px solid #333; padding: 5px; display: inline-block; width: 140px;">&nbsp;</span>
+                    </div>
                 </div>
 
                 <div class="cover-section-title">Question Summary & Mark Sheet</div>
                 <table class="cover-table">
                     <thead>
                         <tr>
-                            <th class="sn-col">S/N</th>
+                            <th class="sn-col">Q</th>
                             <th>Topic</th>
+                            <th>Level</th>
                             <th>Difficulty</th>
                             <th>Concept</th>
                             <th class="marks-col">Marks</th>
@@ -4053,9 +4139,9 @@
                         ${tableRows}
                     </tbody>
                 </table>
-                
+
                 <div style="margin-top: auto; width: 100%; text-align: right; font-family: 'Century Gothic', sans-serif; color: #7f8c8d; font-size: 0.8rem;">
-                    Generated by MathGen v2.0 • Polymath Learning Centre
+                    Generated by MathGen v2.0 &bull; Polymath Learning Centre
                 </div>
             `;
             return page;
