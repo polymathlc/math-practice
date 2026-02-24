@@ -1959,18 +1959,21 @@
                 min-height: 50%;
                 position: relative;
                 overflow: hidden;
+                display: flex;
+                flex-direction: column;
             }
 
             .question-wrapper {
-                height: auto !important;
-                min-height: 0 !important;
+                flex: 1;
+                min-height: 0;
                 page-break-inside: auto !important;
                 break-inside: auto !important;
-                display: block !important;
+                display: flex !important;
+                flex-direction: column;
                 position: relative;
                 box-sizing: border-box;
                 margin: 0 !important;
-                padding: 8mm 0 4mm 0;
+                padding: 8mm 0 0 0;
                 overflow: hidden;
             }
 
@@ -1984,9 +1987,7 @@
                 margin: 0;
                 padding: 0;
                 min-height: auto;
-                height: 100%;
                 position: relative;
-                padding-bottom: 12mm;
             }
 
             .q-layout {
@@ -2017,15 +2018,13 @@
 
             .print-corner-answer {
                 display: block;
-                position: absolute;
-                right: 0;
-                bottom: 0;
                 font-weight: bold;
                 font-size: 1.05rem;
                 text-align: right;
                 white-space: pre;
                 background: white;
-                padding-left: 6mm;
+                margin-top: auto;
+                padding-bottom: 2mm;
             }
 
             .working-space-container {
@@ -2796,12 +2795,21 @@
             const agOverlay = document.getElementById('agreement-overlay');
             if (agOverlay) agOverlay.style.display = 'flex';
         });
+        // Apply cached logo immediately
+        (function () {
+            var cached = localStorage.getItem('mathGenLogoDataUri');
+            if (cached) {
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelectorAll('.polymath-logo').forEach(function (el) { el.src = cached; });
+                });
+            }
+        })();
     </script>
     <div id="auth-overlay"
         style="position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:99999; display:flex; justify-content:center; align-items:center; font-family:'Outfit', sans-serif; overflow-y: auto;">
         <div
             style="width:100%; max-width:450px; padding:30px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.1); border:1px solid #eee; text-align:center; margin: 20px;">
-            <img src="https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1"
+            <img class="polymath-logo" src="https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1"
                 style="max-width:100px; margin-bottom:15px;">
             <h2 id="auth-title" style="margin-bottom: 20px;">Welcome Back!</h2>
 
@@ -2871,7 +2879,7 @@
 
     <aside class="app-sidebar">
         <button class="sidebar-close" onclick="closeSidebar()">✕</button>
-        <div style="text-align: center; margin-bottom: 5px;"><img
+        <div style="text-align: center; margin-bottom: 5px;"><img class="polymath-logo"
                 src="https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1"
                 style="max-width: 120px; height: auto;"></div>
         <h2 style="margin:0 0 10px 0; color:var(--highlight); text-align:center;">MathGen ♾️</h2>
@@ -3342,6 +3350,29 @@
         let flaggedIds = new Set(JSON.parse(localStorage.getItem('mathGenFlagged')) || []);
         let isReviewMode = false;
         const canvasHistory = {};
+        const LOGO_DROPBOX_URL = "https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1";
+        let cachedLogoDataUri = localStorage.getItem('mathGenLogoDataUri') || '';
+
+        function cacheLogoAsDataUri() {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function () {
+                try {
+                    const c = document.createElement('canvas');
+                    c.width = img.naturalWidth;
+                    c.height = img.naturalHeight;
+                    c.getContext('2d').drawImage(img, 0, 0);
+                    cachedLogoDataUri = c.toDataURL('image/png');
+                    localStorage.setItem('mathGenLogoDataUri', cachedLogoDataUri);
+                    document.querySelectorAll('.polymath-logo').forEach(el => el.src = cachedLogoDataUri);
+                } catch (e) { console.warn('Logo cache failed:', e); }
+            };
+            img.src = LOGO_DROPBOX_URL;
+        }
+
+        function getLogoSrc() {
+            return cachedLogoDataUri || LOGO_DROPBOX_URL;
+        }
 
         // ============ INITIALIZATION ============
         window.onload = function () {
@@ -3358,6 +3389,7 @@
                 if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
                 if (localStorage.getItem('audioEnabled') === 'false') audioEnabled = false;
                 updateAudioBtn();
+                if (!cachedLogoDataUri) cacheLogoAsDataUri();
             } catch (e) { console.error("DB Error:", e); }
         };
 
@@ -4095,7 +4127,13 @@
                                 <span class="feedback-tick" id="tick-${index}">✓</span>
                             </div>
                         </div>`;
-                        printCornerHTML = `<div class="print-corner-answer open-ended">Ans : ____________</div>`;
+                        if (isMultiPart) {
+                            printCornerHTML = `<div class="print-corner-answer open-ended">` +
+                                parts.map(p => `${p.label} Ans : ____________`).join('<br>') +
+                                `</div>`;
+                        } else {
+                            printCornerHTML = `<div class="print-corner-answer open-ended">Ans : ____________</div>`;
+                        }
                     }
 
                     const isFlagged = flaggedIds.has(item.id);
@@ -4118,7 +4156,6 @@
                                     <div class="q-number-col">${index + 1}.</div>
                                     <div class="q-content-col">${qMainContent}${inputHTML}</div>
                                 </div>
-                                ${printCornerHTML}
                                 <div class="answer-key-section" style="display:${showAnswers ? 'block' : 'none'}">
                                     <strong>Answer:</strong> ${formattedA}
                                     ${item.exp ? `<div class="explanation-box"><strong>Explanation:</strong> ${formatExplanation(item.exp)}</div>` : ''}
@@ -4140,6 +4177,7 @@
                                     <canvas id="canvas-${index}" class="working-canvas" width="700" height="200"></canvas>
                                 </div>
                             </div>
+                            ${printCornerHTML}
                         </div>`;
 
                     const tempDiv = document.createElement('div');
@@ -4156,7 +4194,7 @@
             const page = document.createElement('div');
             page.className = 'sheet cover-page';
 
-            const logoUrl = "https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1";
+            const logoUrl = getLogoSrc();
 
             let tableRows = '';
             questions.forEach((q, i) => {
