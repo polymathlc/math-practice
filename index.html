@@ -1840,10 +1840,59 @@
             display: block !important;
         }
 
+        /* Answer Key Print Section - hidden on screen */
+        .answer-key-print-section {
+            display: none;
+        }
+
         @media print {
             @page {
                 size: A4;
                 margin: 15mm;
+            }
+
+            .answer-key-print-section {
+                display: block !important;
+                page-break-before: always;
+            }
+
+            .answer-key-print-header {
+                font-family: 'Century Gothic', sans-serif;
+                font-size: 1.5rem;
+                font-weight: bold;
+                text-align: center;
+                border-bottom: 2px solid #333;
+                padding-bottom: 8px;
+                margin-bottom: 15px;
+            }
+
+            .answer-key-print-item {
+                display: flex;
+                gap: 10px;
+                padding: 8px 0;
+                border-bottom: 1px solid #ddd;
+                page-break-inside: avoid;
+            }
+
+            .answer-key-print-q-num {
+                font-weight: bold;
+                min-width: 35px;
+                font-size: 0.95rem;
+            }
+
+            .answer-key-print-q-body {
+                flex: 1;
+            }
+
+            .answer-key-print-ans {
+                font-size: 0.95rem;
+                margin-bottom: 4px;
+            }
+
+            .answer-key-print-exp {
+                font-size: 0.85rem;
+                color: #444;
+                line-height: 1.5;
             }
 
             body {
@@ -2967,6 +3016,9 @@
                 </label>
                 <label style="font-size:0.8rem; cursor:pointer; display:flex; align-items:center; gap:5px;">
                     <input type="checkbox" id="wsOptTable" checked onchange="renderPaper()"> Question Table
+                </label>
+                <label style="font-size:0.8rem; cursor:pointer; display:flex; align-items:center; gap:5px;">
+                    <input type="checkbox" id="wsOptAnswerKey" checked onchange="renderPaper()"> Answer Key
                 </label>
                 <div style="display:flex; align-items:center; gap:5px; margin-top:2px;">
                     <input type="text" id="wsOptTitle" placeholder="Custom title..." value="MATHEMATICS WORKSHEET"
@@ -4232,6 +4284,38 @@
                     qStartTimes[index] = Date.now();
                 } catch (e) { console.error("Error rendering Q" + index, e); }
             });
+
+            // Add compiled answer key section for print
+            const showAnswerKey = document.getElementById('wsOptAnswerKey').checked;
+            if (showAnswerKey) {
+                const answerKeySection = generateAnswerKey(currentPaperQuestions);
+                container.appendChild(answerKeySection);
+            }
+        }
+
+        function generateAnswerKey(questions) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'answer-key-print-section';
+
+            let html = `<div class="answer-key-print-header">Answer Key</div>`;
+
+            questions.forEach((q, i) => {
+                const formattedA = formatText(q.a);
+                const mcqData = parseMCQ(q.q);
+                const isMCQ = mcqData.options.length > 0;
+
+                html += `<div class="answer-key-print-item">`;
+                html += `<div class="answer-key-print-q-num">Q${i + 1}</div>`;
+                html += `<div class="answer-key-print-q-body">`;
+                html += `<div class="answer-key-print-ans"><strong>Answer:</strong> ${formattedA}${q.u ? ' ' + q.u : ''}</div>`;
+                if (q.exp) {
+                    html += `<div class="answer-key-print-exp">${formatExplanation(q.exp)}</div>`;
+                }
+                html += `</div></div>`;
+            });
+
+            wrapper.innerHTML = html;
+            return wrapper;
         }
 
         function generateCoverPage(questions) {
